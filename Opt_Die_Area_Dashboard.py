@@ -37,8 +37,8 @@ This dashboard allows you to input die dimensions (Xdie and Ydie) and view:
 Xdie = st.number_input("Enter Xdie (mm):", min_value=1.0, value=10.0, step=0.1)
 Ydie = st.number_input("Enter Ydie (mm):", min_value=1.0, value=8.0, step=0.1)
 Scribe_use_flag = st.selectbox("Use Scribe Width?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
-Scribe_x_width = st.number_input("Enter Scribe X Width (µm):", min_value=0.0, value=0.0, step=0.1)
-Scribe_y_width = st.number_input("Enter Scribe Y Width (µm):", min_value=0.0, value=0.0, step=0.1)
+Scribe_x_width = st.number_input("Enter Scribe X Width (Î¼m):", min_value=0.0, value=0.0, step=0.1)
+Scribe_y_width = st.number_input("Enter Scribe Y Width (Î¼m):", min_value=0.0, value=0.0, step=0.1)
 
 # Generate random values
 np.random.seed(42)
