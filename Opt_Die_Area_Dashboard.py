@@ -42,8 +42,8 @@ Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.
 
 # Generate random values
 np.random.seed(42)
-Xdie_values = np.random.normal(Xdie, 0.5, 1000)  # Mean = Xdie, Std Dev = 0.5
-Ydie_values = np.random.normal(Ydie, 0.5, 1000)  # Mean = Ydie, Std Dev = 0.5
+Xdie_values = np.random.normal(Xdie, 0.5, 1000)
+Ydie_values = np.random.normal(Ydie, 0.5, 1000)
 aspect_ratio_range = (0.5, 1.5)
 
 # Calculate table data
@@ -68,7 +68,20 @@ df = pd.DataFrame(data)
 # Display table
 st.subheader("Results Table")
 if not df.empty:
-    st.dataframe(df)
+    # Styling the table for better impact
+    styled_df = df.style.format(
+        {"Xdie (mm)": "{:.2f}", "Ydie (mm)": "{:.2f}", "Adie (mm^2)": "{:.2f}", "MFU (%)": "{:.2f}", "Aspect Ratio": "{:.2f}"}
+    ).background_gradient(subset="MFU (%)", cmap="viridis")
+    st.table(styled_df)
+
+    # Allow downloading the table as CSV
+    csv = df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download Table as CSV",
+        data=csv,
+        file_name="optimal_die_area.csv",
+        mime="text/csv",
+    )
 else:
     st.warning("No valid data found for the given input values.")
 
@@ -89,11 +102,13 @@ if not df.empty:
         for j in range(X_grid.shape[1]):
             Z_grid[i, j] = MFU(X_grid[i, j], Y_grid[i, j], Scribe_use_flag, Scribe_x_width, Scribe_y_width)["MFU%"]
 
-    # Plot contour
+    # Plot contour with scatter points
     fig, ax = plt.subplots(figsize=(8, 6))
     contour = ax.contourf(X_grid, Y_grid, Z_grid, cmap='viridis', levels=20)
     plt.colorbar(contour, label="MFU (%)")
+    ax.scatter(X, Y, color="white", s=10, label="Data Points")
     ax.set_xlabel("Xdie (mm)")
     ax.set_ylabel("Ydie (mm)")
-    ax.set_title("Contour Plot of MFU")
+    ax.set_title("Contour Plot of MFU with Data Points")
+    ax.legend()
     st.pyplot(fig)
