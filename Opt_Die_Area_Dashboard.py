@@ -108,23 +108,22 @@ df = pd.DataFrame(data)
 # Display table
 st.subheader("Results Table")
 if not df.empty:
-    # Format the DataFrame values
-    df_formatted = df.style.format({
-        "Xdie (mm)": "{:.2f}",
-        "Ydie (mm)": "{:.2f}",
-        "Adie (mm^2)": "{:.2f}",
-        "MFU (%)": "{:.2f}",
-        "Aspect Ratio": "{:.2f}"
-    })
+    # # Reset the index and add it as a column to preserve original indexing
+    # df_with_index = df.reset_index()
+    # df_with_index.rename(columns={'index': 'Original Index'}, inplace=True)
+    
+    # Styling the table for better impact
+    styled_df = df.style.format(
+        {"Xdie (mm)": "{:.2f}", 
+         "Ydie (mm)": "{:.2f}", 
+         "Adie (mm^2)": "{:.2f}", 
+         "MFU (%)": "{:.2f}", 
+         "Aspect Ratio": "{:.2f}"}
+    ).set_table_styles([{'selector': 'td', 'props': [('text-align', 'center')]}]).background_gradient(subset="MFU (%)", cmap="viridis")
 
-    # Convert the styled DataFrame to HTML with center alignment
-    table_html = df_formatted.set_table_styles([
-        {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]},
-        {'selector': 'td', 'props': [('text-align', 'center')]}
-    ]).to_html()
+    # Display as a dataframe to enable sorting
+    st.dataframe(styled_df, use_container_width=True)
 
-    # Display the table using markdown and allow HTML rendering
-    st.markdown(table_html, unsafe_allow_html=True)
 
     # Allow downloading the table as CSV
     csv = df.to_csv(index=False).encode('utf-8')
