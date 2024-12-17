@@ -119,7 +119,8 @@ if not df.empty:
          "Adie (mm^2)": "{:.2f}", 
          "MFU (%)": "{:.2f}", 
          "Aspect Ratio": "{:.2f}"}
-    ).background_gradient(subset="MFU (%)", cmap="viridis")
+    ).set_table_styles([{'selector': 'td', 'props': [('text-align', 'center')]}])
+    #background_gradient(subset="MFU (%)", cmap="viridis")
 
     # Display as a dataframe to enable sorting
     st.dataframe(styled_df, use_container_width=True)
