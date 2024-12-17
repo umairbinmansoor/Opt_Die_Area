@@ -56,9 +56,9 @@ with col1:
     Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1)
 
 with col2:
-    st.subheader("Die Representation")
+    #st.subheader("Die Representation")
     fig, ax = plt.subplots(figsize=(2, 2))
-    ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor="black", lw=2))
+    ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", lw=2))
     ax.set_xlim(0, Xdie * 1.2)
     ax.set_ylim(0, Ydie * 1.2)
     ax.set_aspect('equal', adjustable='box')
