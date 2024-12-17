@@ -117,31 +117,14 @@ if not df.empty:
         "Aspect Ratio": "{:.2f}"
     })
 
-    # Convert the styled DataFrame to HTML
+    # Convert the styled DataFrame to HTML with center alignment
     table_html = df_formatted.set_table_styles([
         {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]},
         {'selector': 'td', 'props': [('text-align', 'center')]}
-    ]).to_html(index=False)
+    ]).to_html()
 
-    # Add DataTables library for sorting and styling
-    html_code = f"""
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
-    <table id="myTable" class="display" style="width:100%">
-        {table_html}
-    </table>
-
-    <script>
-        $(document).ready( function () {{
-            $('#myTable').DataTable();
-        }} );
-    </script>
-    """
-
-    # Display the table with DataTables sorting
-    st.markdown(html_code, unsafe_allow_html=True)
+    # Display the table using markdown and allow HTML rendering
+    st.markdown(table_html, unsafe_allow_html=True)
 
     # Allow downloading the table as CSV
     csv = df.to_csv(index=False).encode('utf-8')
