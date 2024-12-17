@@ -61,7 +61,7 @@ with col2:
     ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor=None, lw=2))
     ax.set_xlim(0, Xdie)
     ax.set_ylim(0, Ydie)
-    ax.set_aspect('equal', adjustable='box')
+    ax.set_aspect('equal')
     #ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=6)
     ax.tick_params(axis='both', labelsize=4)  # Reduce X-tick and Y-tick font size
     ax.set_xlabel("Width (mm)", fontsize=4)
