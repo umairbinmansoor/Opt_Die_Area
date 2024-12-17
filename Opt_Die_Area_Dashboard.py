@@ -67,8 +67,8 @@ with col2:
     ax.set_aspect('equal', adjustable='box')  # Keep the aspect ratio equal
     #ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=6)
     ax.tick_params(axis='both', labelsize=8)  # Reduce X-tick and Y-tick font size
-    ax.set_xlabel("Width (mm)", fontsize=8)
-    ax.set_ylabel("Height (mm)", fontsize=8)
+    ax.set_xlabel("Xdie (mm)", fontsize=8)
+    ax.set_ylabel("Ydie (mm)", fontsize=8)
     st.pyplot(fig)
 
 # Generate random values
@@ -119,8 +119,7 @@ if not df.empty:
          "Adie (mm^2)": "{:.2f}", 
          "MFU (%)": "{:.2f}", 
          "Aspect Ratio": "{:.2f}"}
-    ).set_table_styles([{'selector': 'td', 'props': [('text-align', 'center')]}])
-    #background_gradient(subset="MFU (%)", cmap="viridis")
+    ).set_table_styles([{'selector': 'td', 'props': [('text-align', 'center')]}]).background_gradient(subset="MFU (%)", cmap="viridis")
 
     # Display as a dataframe to enable sorting
     st.dataframe(styled_df, use_container_width=True)
