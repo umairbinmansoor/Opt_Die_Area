@@ -107,9 +107,9 @@ st.subheader("Results Table")
 if not df.empty:
     # Reset the index and drop it
     df_reset = df.reset_index(drop=True)
-    
+
     # Styling the table for better impact
-    styled_df = df.style.format(
+    styled_df = df_reset.style.format(
         {"Xdie (mm)": "{:.2f}", 
          "Ydie (mm)": "{:.2f}", 
          "Adie (mm^2)": "{:.2f}", 
