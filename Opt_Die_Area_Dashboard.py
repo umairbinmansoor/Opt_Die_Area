@@ -64,8 +64,8 @@ with col2:
     ax.set_aspect('equal', adjustable='box')
     #ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=6)
     ax.tick_params(axis='both', labelsize=4)  # Reduce X-tick and Y-tick font size
-    ax.set_xlabel("Width (mm)", fontsize=6)
-    ax.set_ylabel("Height (mm)", fontsize=6)
+    ax.set_xlabel("Width (mm)", fontsize=4)
+    ax.set_ylabel("Height (mm)", fontsize=4)
     st.pyplot(fig)
 
 # Generate random values
@@ -105,12 +105,12 @@ df = pd.DataFrame(data)
 # Display table
 st.subheader("Results Table")
 if not df.empty:
-    # Reset the index and add it as a column to preserve original indexing
-    df_with_index = df.reset_index()
-    df_with_index.rename(columns={'index': 'Original Index'}, inplace=True)
+    # # Reset the index and add it as a column to preserve original indexing
+    # df_with_index = df.reset_index()
+    # df_with_index.rename(columns={'index': 'Original Index'}, inplace=True)
     
     # Styling the table for better impact
-    styled_df = df_with_index.style.format(
+    styled_df = df.style.format(
         {"Xdie (mm)": "{:.2f}", 
          "Ydie (mm)": "{:.2f}", 
          "Adie (mm^2)": "{:.2f}", 
