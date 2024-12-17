@@ -57,7 +57,7 @@ with col1:
 
 with col2:
     #st.subheader("Die Representation")
-    fig, ax = plt.subplots(figsize=(2, 2))
+    fig, ax = plt.subplots(figsize=(Xdie, Ydie))
     ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor=None, lw=2))
     ax.set_xlim(0, Xdie)
     ax.set_ylim(0, Ydie)
