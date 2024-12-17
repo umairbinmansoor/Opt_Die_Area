@@ -33,12 +33,37 @@ This dashboard allows you to input die dimensions (Xdie and Ydie) and view:
 - A contour plot of MFU with Xdie and Ydie axes.
 """)
 
-# Input fields
-Xdie = st.number_input("Enter Xdie (mm):", min_value=1.0, value=10.0, step=0.1)
-Ydie = st.number_input("Enter Ydie (mm):", min_value=1.0, value=8.0, step=0.1)
-Scribe_use_flag = st.selectbox("Use Scribe Width?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
-Scribe_x_width = st.number_input("Enter Scribe X Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1)
-Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1)
+# Custom CSS to adjust input field width
+st.markdown("""
+    <style>
+        div[data-testid="stNumberInput"] > div > div > input {
+            width: 120px !important;
+        }
+        div[data-testid="stSelectbox"] > div > div > select {
+            width: 120px !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Input fields in columns for better layout
+col1, col2 = st.columns([1, 2])  # Two columns layout
+
+with col1:
+    Xdie = st.number_input("Enter Xdie (mm):", min_value=1.0, value=10.0, step=0.1)
+    Ydie = st.number_input("Enter Ydie (mm):", min_value=1.0, value=8.0, step=0.1)
+    Scribe_use_flag = st.selectbox("Use Scribe Width?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
+    Scribe_x_width = st.number_input("Enter Scribe X Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1)
+    Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1)
+
+with col2:
+    st.subheader("Die Representation")
+    fig, ax = plt.subplots(figsize=(2, 2))
+    ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor="black", lw=2))
+    ax.set_xlim(0, Xdie * 1.2)
+    ax.set_ylim(0, Ydie * 1.2)
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm")
+    st.pyplot(fig)
 
 # Generate random values
 np.random.seed(42)
