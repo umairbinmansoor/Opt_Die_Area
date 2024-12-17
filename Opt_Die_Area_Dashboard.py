@@ -27,6 +27,7 @@ def MFU(Xdie, Ydie, Scribe_use_flag=0, Scribe_x_width=0, Scribe_y_width=0):
 
 # Streamlit app
 st.title("Optimal Xdie-Ydie Calculator Dashboard")
+
 st.markdown("""
 This dashboard allows you to input die dimensions (Xdie and Ydie) and view:
 - A table of possible Xdie, Ydie, Adie, MFU, and Aspect Ratio values.
@@ -46,7 +47,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Input fields in columns for better layout
-col1, col2 = st.columns([1, 2])  # Two columns layout
+col1, col2 = st.columns([1, 2])
 
 with col1:
     Xdie = st.number_input("Enter Xdie (mm):", min_value=1.0, value=10.0, step=0.1)
@@ -58,11 +59,16 @@ with col1:
 with col2:
     #st.subheader("Die Representation")
     fig, ax = plt.subplots(figsize=(2, 2))
-    ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", lw=2))
-    ax.set_xlim(0, Xdie * 1.2)
-    ax.set_ylim(0, Ydie * 1.2)
+    ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor="none"))
+    ax.set_xlim(0, max(Xdie, Ydie) * 1.2)
+    ax.set_ylim(0, max(Xdie, Ydie) * 1.2)
     ax.set_aspect('equal', adjustable='box')
-    ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm")
+
+    # Update fonts to smaller size
+    ax.tick_params(labelsize=8)
+    ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=8)
+    ax.set_xlabel("Width (mm)", fontsize=8)
+    ax.set_ylabel("Height (mm)", fontsize=8)
     st.pyplot(fig)
 
 # Generate random values
@@ -83,6 +89,8 @@ for xd, yd in zip(Xdie_values, Ydie_values):
         data.append({
             "Xdie (mm)": round(xd, 2),
             "Ydie (mm)": round(yd, 2),
+            "Entered Xdie (mm)": Xdie,
+            "Entered Ydie (mm)": Ydie,
             "Adie (mm^2)": round(mfu_data['Adie'], 2),
             "MFU (%)": round(mfu_data['MFU%'], 2),
             "Aspect Ratio": round(yd / xd, 2)
@@ -95,7 +103,8 @@ st.subheader("Results Table")
 if not df.empty:
     # Styling the table for better impact
     styled_df = df.style.format(
-        {"Xdie (mm)": "{:.2f}", "Ydie (mm)": "{:.2f}", "Adie (mm^2)": "{:.2f}", "MFU (%)": "{:.2f}", "Aspect Ratio": "{:.2f}"}
+        {"Xdie (mm)": "{:.2f}", "Ydie (mm)": "{:.2f}", "Entered Xdie (mm)": "{:.2f}",
+         "Entered Ydie (mm)": "{:.2f}", "Adie (mm^2)": "{:.2f}", "MFU (%)": "{:.2f}", "Aspect Ratio": "{:.2f}"}
     ).background_gradient(subset="MFU (%)", cmap="viridis")
     st.table(styled_df)
 
@@ -109,31 +118,3 @@ if not df.empty:
     )
 else:
     st.warning("No valid data found for the given input values.")
-
-# Contour plot of MFU
-if not df.empty:
-    st.subheader("Contour Plot of MFU")
-    X = df["Xdie (mm)"]
-    Y = df["Ydie (mm)"]
-    Z = df["MFU (%)"]
-
-    # Create a grid for contour
-    X_grid, Y_grid = np.meshgrid(
-        np.linspace(X.min(), X.max(), 100),
-        np.linspace(Y.min(), Y.max(), 100)
-    )
-    Z_grid = np.zeros_like(X_grid)
-    for i in range(X_grid.shape[0]):
-        for j in range(X_grid.shape[1]):
-            Z_grid[i, j] = MFU(X_grid[i, j], Y_grid[i, j], Scribe_use_flag, Scribe_x_width, Scribe_y_width)["MFU%"]
-
-    # Plot contour with scatter points
-    fig, ax = plt.subplots(figsize=(8, 6))
-    contour = ax.contourf(X_grid, Y_grid, Z_grid, cmap='viridis', levels=20)
-    plt.colorbar(contour, label="MFU (%)")
-    ax.scatter(X, Y, color="white", s=10, label="Data Points")
-    ax.set_xlabel("Xdie (mm)")
-    ax.set_ylabel("Ydie (mm)")
-    ax.set_title("Contour Plot of MFU with Data Points")
-    ax.legend()
-    st.pyplot(fig)
