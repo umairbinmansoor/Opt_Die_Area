@@ -107,9 +107,16 @@ st.subheader("Results Table")
 if not df.empty:
     # Styling the table for better impact
     styled_df = df.style.format(
-        {"Xdie (mm)": "{:.2f}", "Ydie (mm)": "{:.2f}", "Adie (mm^2)": "{:.2f}", "MFU (%)": "{:.2f}", "Aspect Ratio": "{:.2f}"}
+        {"Xdie (mm)": "{:.2f}", 
+         "Ydie (mm)": "{:.2f}", 
+         "Adie (mm^2)": "{:.2f}", 
+         "MFU (%)": "{:.2f}", 
+         "Aspect Ratio": "{:.2f}"}
     ).background_gradient(subset="MFU (%)", cmap="viridis")
-    st.table(styled_df)
+
+    # Display as a dataframe to enable sorting
+    st.dataframe(styled_df, use_container_width=True)
+
 
     # Allow downloading the table as CSV
     csv = df.to_csv(index=False).encode('utf-8')
