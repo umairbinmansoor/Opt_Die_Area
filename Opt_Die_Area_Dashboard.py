@@ -63,9 +63,9 @@ with col2:
     ax.set_ylim(0, Ydie)
     ax.set_aspect('equal')
     #ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=6)
-    ax.tick_params(axis='both', labelsize=8)  # Reduce X-tick and Y-tick font size
-    ax.set_xlabel("Width (mm)", fontsize=8)
-    ax.set_ylabel("Height (mm)", fontsize=8)
+    ax.tick_params(axis='both', labelsize=12)  # Reduce X-tick and Y-tick font size
+    ax.set_xlabel("Width (mm)", fontsize=12)
+    ax.set_ylabel("Height (mm)", fontsize=12)
     st.pyplot(fig)
 
 # Generate random values
