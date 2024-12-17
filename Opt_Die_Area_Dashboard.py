@@ -81,6 +81,9 @@ aspect_ratio_range = (0.5, 1.5)
 data = []
 target_Adie = Xdie * Ydie
 
+np.append(Xdie_values, Xdie)
+np.append(Ydie_values, Ydie)
+
 for xd, yd in zip(Xdie_values, Ydie_values):
     Adie = xd * yd
     aspect_ratio = yd / xd
@@ -89,8 +92,6 @@ for xd, yd in zip(Xdie_values, Ydie_values):
         data.append({
             "Xdie (mm)": round(xd, 2),
             "Ydie (mm)": round(yd, 2),
-            "Entered Xdie (mm)": Xdie,
-            "Entered Ydie (mm)": Ydie,
             "Adie (mm^2)": round(mfu_data['Adie'], 2),
             "MFU (%)": round(mfu_data['MFU%'], 2),
             "Aspect Ratio": round(yd / xd, 2)
