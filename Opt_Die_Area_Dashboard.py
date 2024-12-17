@@ -105,9 +105,8 @@ df = pd.DataFrame(data)
 # Display table
 st.subheader("Results Table")
 if not df.empty:
-    # Reset the index and add it as a column to preserve original indexing
-    df_with_index = df.reset_index()
-    df_with_index.rename(columns={'index': 'Original Index'}, inplace=True)
+    # Reset the index and drop it
+    df_reset = df.reset_index(drop=True)
     
     # Styling the table for better impact
     styled_df = df.style.format(
