@@ -158,7 +158,7 @@ if not df.empty:
     contour = ax.contourf(X_grid, Y_grid, Z_grid, cmap='viridis', levels=20)
     plt.colorbar(contour, label="MFU (%)")
     ax.scatter(X, Y, color="white", s=10, label="MFU (%)")
-    ax.scatter(Xdie, Ydie, color="red", marker='x', s=40, label=f"Xdie={Xdie}, Ydie={Ydie}")
+    ax.scatter(Xdie, Ydie, color="red", marker='x', s=60, label=f"Xdie={Xdie:.2f}, Ydie={Ydie:.2f}")
     ax.set_xlabel("Xdie (mm)")
     ax.set_ylabel("Ydie (mm)")
     ax.set_title("Contour Plot of MFU with Data Points")
