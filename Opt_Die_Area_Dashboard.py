@@ -26,7 +26,7 @@ def MFU(Xdie, Ydie, Scribe_use_flag=0, Scribe_x_width=0, Scribe_y_width=0):
     return MFU_dict
 
 # Streamlit app
-st.title("Optimal Xdie-Ydie Calculator Dashboard")
+st.title("DIE YIELD AND MFU OPTIMIZATION DASHBOARD")
 st.markdown("""
 This dashboard allows you to input die dimensions (Xdie and Ydie) and view:
 - A table of possible Xdie, Ydie, Adie, MFU, and Aspect Ratio values.
