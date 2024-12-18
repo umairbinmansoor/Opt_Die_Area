@@ -156,8 +156,8 @@ if not df.empty:
     # Plot contour with scatter points
     fig, ax = plt.subplots(figsize=(8, 6))
     contour = ax.contourf(X_grid, Y_grid, Z_grid, cmap='viridis', levels=20)
-    plt.colorbar(contour, label="ISO AREA MFU Contour")
-    ax.scatter(X, Y, color="white", s=10, label="MFU (%)")
+    plt.colorbar(contour, label="MFU (%)")
+    ax.scatter(X, Y, color="white", s=10, label="ISO AREA MFU Contour")
     ax.scatter(Xdie, Ydie, color="red", marker='x', s=60, label=f"Xdie={Xdie:.2f}, Ydie={Ydie:.2f}")
     ax.set_xlabel("Xdie (mm)")
     ax.set_ylabel("Ydie (mm)")
