@@ -85,7 +85,7 @@ data = [
     ["", "RF", "", "", "", ""],
     ["", "Recovery", "", "", "", ""],
     ["Mesh", "", "", "", "", ""],
-    ["White\nSpace", "", "", "", "", ""],
+    ["White"+"\n"+"Space", "", "", "", "", ""],
     ["Analog", "", "", "", "", ""]
 ]
 placeholder_df = pd.DataFrame(data, columns=columns)
