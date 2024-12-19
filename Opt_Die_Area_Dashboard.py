@@ -72,7 +72,7 @@ with col2:
     st.pyplot(fig)
 
 # Table placeholder
-st.subheader("Die Construction Table")
+st.subheader("DIE CONSTRUCTION/COMPOSITION")
 
 # Create a DataFrame with the specified column names and empty cells
 columns = ["Category", "Subcategory", "Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
@@ -132,7 +132,7 @@ data.append({
 df = pd.DataFrame(data)
 
 # Display table
-st.subheader("Results Table")
+st.subheader("OPTIMAL MFU TABLE")
 if not df.empty:
     # # Reset the index and add it as a column to preserve original indexing
     # df_with_index = df.reset_index()
