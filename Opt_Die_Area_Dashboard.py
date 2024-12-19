@@ -95,20 +95,6 @@ placeholder_df = pd.DataFrame(data, columns=columns)
 # Display table
 st.table(placeholder_df)
 
-# Function to create interactive widgets for each cell
-def create_interactive_df(df):
-    interactive_df = df.copy()
-    for col in df.columns:
-        interactive_df[col] = df[col].apply(lambda x: widgets.Text(value=str(x)))
-    return interactive_df
-
-# Create interactive DataFrame
-interactive_df = create_interactive_df(placeholder_df)
-
-# Display the interactive DataFrame
-for i in range(len(interactive_df)):
-    display(widgets.HBox([interactive_df[col][i] for col in interactive_df.columns]))
-
 # Generate random values
 np.random.seed(42)
 Xdie_values = np.random.normal(Xdie, 0.5, 1000)
