@@ -71,6 +71,30 @@ with col2:
     ax.set_ylabel("Ydie (mm)", fontsize=8)
     st.pyplot(fig)
 
+# Table placeholder
+st.subheader("Table Placeholder")
+
+# Create a DataFrame with the specified column names and empty cells
+columns = ["Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+data = [
+    ["Logic", "", "", "", ""],
+    ["", "short Ht", "", "", ""],
+    ["", "Med Ht", "", "", ""],
+    ["", "Recovery", "", "", ""],
+    ["Memory", "", "", "", ""],
+    ["", "HDC", "", "", ""],
+    ["", "HCC", "", "", ""],
+    ["", "RF", "", "", ""],
+    ["", "Recovery", "", "", ""],
+    ["Mesh", "", "", "", ""],
+    ["White Space", "", "", "", ""],
+    ["Analog", "", "", "", ""]
+]
+placeholder_df = pd.DataFrame(data, columns=["Category"] + columns)
+
+# Display table
+st.table(placeholder_df)
+
 # Generate random values
 np.random.seed(42)
 Xdie_values = np.random.normal(Xdie, 0.5, 1000)
