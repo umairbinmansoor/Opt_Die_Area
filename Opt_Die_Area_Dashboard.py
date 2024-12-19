@@ -90,32 +90,12 @@ data = [
 ]
 placeholder_df = pd.DataFrame(data, columns=columns)
 
-# # Display table
-# st.table(placeholder_df)
-
-# Define editable status for each column
-# editable_columns = {
-#     "Category": False,
-#     "Subcategory": False,
-#     "Area%": True,
-#     "Utilization/Efficiency[%]": True,
-#     "Must Work": True,
-#     "Redundancy": True
-# }
-
 # Display the interactive table
 edited_df = st.data_editor(
     placeholder_df,
     disabled=("Category", "Subcategory"),
-    # column_config={
-    #     col: {"editable": editable} for col, editable in editable_columns.items()
-    # },
     use_container_width=True
 )
-
-# Display the updated table values entered by the user
-st.write("Updated Table:")
-st.write(edited_df)
 
 # Generate random values
 np.random.seed(42)
