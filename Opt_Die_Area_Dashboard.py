@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+import ipywidgets as widgets
+from IPython.display import display
 
 # Define functions for calculations
 def Die_count_per_reticle(Xdie, Ydie, Scribe_use_flag=0, Scribe_x_width=0, Scribe_y_width=0):
@@ -92,6 +94,20 @@ placeholder_df = pd.DataFrame(data, columns=columns)
 
 # Display table
 st.table(placeholder_df)
+
+# Function to create interactive widgets for each cell
+def create_interactive_df(df):
+    interactive_df = df.copy()
+    for col in df.columns:
+        interactive_df[col] = df[col].apply(lambda x: widgets.Text(value=str(x)))
+    return interactive_df
+
+# Create interactive DataFrame
+interactive_df = create_interactive_df(placeholder_df)
+
+# Display the interactive DataFrame
+for i in range(len(interactive_df)):
+    display(widgets.HBox([interactive_df[col][i] for col in interactive_df.columns]))
 
 # Generate random values
 np.random.seed(42)
