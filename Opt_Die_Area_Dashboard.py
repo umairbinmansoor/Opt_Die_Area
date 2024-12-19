@@ -94,7 +94,7 @@ placeholder_df = pd.DataFrame(data, columns=columns)
 edited_df = st.data_editor(
     placeholder_df,
     disabled=("Category", "Subcategory"),
-    use_container_width=True
+    use_container_width=False
 )
 
 # Generate random values
