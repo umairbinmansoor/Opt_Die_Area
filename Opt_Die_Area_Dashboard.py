@@ -77,12 +77,10 @@ st.subheader("Table Placeholder")
 # Create a DataFrame with the specified column names and empty cells
 columns = ["Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
 data = [
-    ["Logic", "", "", "", ""],
-    ["", "short Ht", "", "", ""],
+    ["Logic", "short Ht", "", "", ""],
     ["", "Med Ht", "", "", ""],
     ["", "Recovery", "", "", ""],
-    ["Memory", "", "", "", ""],
-    ["", "HDC", "", "", ""],
+    ["Memory", "HDC", "", "", ""],
     ["", "HCC", "", "", ""],
     ["", "RF", "", "", ""],
     ["", "Recovery", "", "", ""],
