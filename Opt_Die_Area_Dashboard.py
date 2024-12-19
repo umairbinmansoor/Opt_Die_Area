@@ -106,7 +106,7 @@ placeholder_df = pd.DataFrame(data, columns=columns)
 # Display the interactive table
 edited_df = st.data_editor(
     placeholder_df,
-    disabled=("Category", "Subcategory")
+    disabled=("Category", "Subcategory"),
     # column_config={
     #     col: {"editable": editable} for col, editable in editable_columns.items()
     # },
