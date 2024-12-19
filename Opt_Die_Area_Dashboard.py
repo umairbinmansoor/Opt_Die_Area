@@ -90,8 +90,8 @@ data = [
 ]
 placeholder_df = pd.DataFrame(data, columns=columns)
 
-# Display table
-st.table(placeholder_df)
+# # Display table
+# st.table(placeholder_df)
 
 # Display the interactive table
 edited_df = st.data_editor(
@@ -100,9 +100,9 @@ edited_df = st.data_editor(
     num_rows="dynamic"  # Allows adding new rows if needed
 )
 
-# Display the updated table values entered by the user
-st.write("Updated Table:")
-st.write(edited_df)
+# # Display the updated table values entered by the user
+# st.write("Updated Table:")
+# st.write(edited_df)
 
 # Generate random values
 np.random.seed(42)
