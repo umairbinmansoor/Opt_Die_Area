@@ -112,6 +112,10 @@ edited_df = st.data_editor(
     use_container_width=True
 )
 
+# Display the updated table values entered by the user
+st.write("Updated Table:")
+st.write(edited_df)
+
 # Generate random values
 np.random.seed(42)
 Xdie_values = np.random.normal(Xdie, 0.5, 1000)
