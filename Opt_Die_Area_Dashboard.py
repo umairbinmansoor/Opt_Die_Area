@@ -75,7 +75,7 @@ with col2:
 st.subheader("Table Placeholder")
 
 # Create a DataFrame with the specified column names and empty cells
-columns = ["_", "_", "Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+columns = ["Category", "Subcategory", "Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
 data = [
     ["Logic", "short Ht", "", "", "", ""],
     ["", "Med Ht", "", "", "", ""],
