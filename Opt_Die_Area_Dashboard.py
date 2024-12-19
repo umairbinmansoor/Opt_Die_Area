@@ -72,7 +72,7 @@ with col2:
     st.pyplot(fig)
 
 # Table placeholder
-st.subheader("Table Placeholder")
+st.subheader("Die Construction Table")
 
 # Create a DataFrame with the specified column names and empty cells
 columns = ["Category", "Subcategory", "Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
