@@ -75,7 +75,7 @@ with col2:
 st.subheader("Table Placeholder")
 
 # Create a DataFrame with the specified column names and empty cells
-columns = ["Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+columns = ["Category", "Subcategory", "Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
 data = [
     ["Logic", "short Ht", "", "", "", ""],
     ["", "Med Ht", "", "", "", ""],
@@ -88,7 +88,7 @@ data = [
     ["White Space", "", "", "", "", ""],
     ["Analog", "", "", "", "", ""]
 ]
-placeholder_df = pd.DataFrame(data, columns=[" "] + [" "] + columns)
+placeholder_df = pd.DataFrame(data, columns=columns)
 
 # Display table
 st.table(placeholder_df)
