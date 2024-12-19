@@ -90,7 +90,7 @@ data = [
     ["White Space", "", "", "", ""],
     ["Analog", "", "", "", ""]
 ]
-placeholder_df = pd.DataFrame(data, columns=["Category"] + columns)
+placeholder_df = pd.DataFrame(data, columns)
 
 # Display table
 st.table(placeholder_df)
