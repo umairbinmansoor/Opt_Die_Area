@@ -207,6 +207,8 @@ if st.button("Calculate Yield and Display Table"):
         # die_height = float(input("Enter the height of Die in mm: "))
         die_width = Xdie
         die_height = Ydie
+
+        st.write("Hello1")
         if die_width <= 0 or die_height <= 0:
             raise ValueError("Die dimensions must be positive values.")
         die_area = die_height * die_width
@@ -222,7 +224,7 @@ if st.button("Calculate Yield and Display Table"):
         die_defect_density_df['Die Area'] = f"{die_area} mm²"
         # Initialize an empty dictionary for the final area_dict
         area_dict = {}
-        st.write("Hello1")
+        
         # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
         for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/ Efficiency [%]']):
             if pd.notna(label) and pd.notna(area):
