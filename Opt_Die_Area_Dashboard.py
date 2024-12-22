@@ -173,7 +173,7 @@ if not df.empty:
 st.subheader("DIE CONSTRUCTION/COMPOSITION")
 
 # Create a DataFrame with the specified column names and empty cells
-columns = ["Category", "Subcategory", "Defectivity Labels", "Area%", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
 placeholder_df = pd.DataFrame(dc_data, columns=columns)
 
 # Display the interactive table
@@ -188,7 +188,7 @@ if st.button("Calculate Yield and Display Table"):
     st.write("Button Pressed!")  # Debugging line to confirm button functionality
 
     # Validate input table data
-    if edited_df[["Area%", "Utilization/Efficiency[%]", "Must Work"]].isnull().any().any():
+    if edited_df[["Area %", "Utilization/Efficiency[%]", "Must Work"]].isnull().any().any():
         st.warning("Please fill in all required fields in the DIE CONSTRUCTION/COMPOSITION table.")
     else:
         # YIELD CALCULATION
@@ -202,7 +202,7 @@ if st.button("Calculate Yield and Display Table"):
         die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
         if die_construction_df['Area %'].isnull().any():
             st.error("Area % contains invalid or missing values.")
-            raise ValueError("Area % contains invalid or missing values.")
+            #raise ValueError("Area % contains invalid or missing values.")
         
         die_defect_density_df["time"] = technology_defect_density_df["time"]
 
