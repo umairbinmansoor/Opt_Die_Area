@@ -293,9 +293,9 @@ if st.button("Calculate Yield and Display Table"):
         # Format and style the table for better readability
         styled_display_df = display_df.style.format({
             "time": "{}",
-            "Die Aggregate DD": "{:.2f}",  # Format DD values to 2 decimals
+            "Die Aggregate DD": "{}",  # Format DD values to 2 decimals
             "Yield": "{}",
-            "GDPW": "{:.2f}"  # Format GDPW values to 2 decimals
+            "GDPW": "{}"  # Format GDPW values to 2 decimals
         }).set_table_styles([
             {'selector': 'td', 'props': [('text-align', 'center')]},
             {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]}
