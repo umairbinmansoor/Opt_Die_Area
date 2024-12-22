@@ -190,7 +190,7 @@ if st.button("Calculate Yield and Display Table"):
     die_construction_df = edited_df.copy()
     # Read the data into a pandas DataFrame
     technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
-    st.write("Hello1")
+    #st.write("Hello1")
     try:
         # Read the die_construction and technology_defect_density files
         #die_construction_df = pd.read_csv(die_construction_file)
@@ -270,7 +270,7 @@ if st.button("Calculate Yield and Display Table"):
         die_defect_density_df['GDPW'] = die_defect_density_df['Yield'].apply(lambda yield_value: calculate_gdpw(yield_value, pdpw))
 
         die_defect_density_df['Yield'] = die_defect_density_df['Yield'].apply(lambda y: f"{y * 100:.2f}%")
-        die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float)#.astype(str) + " (def/cm²)"
+        die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float).astype(str) + " (def/cm²)"
         die_defect_density_df['MFU'] = round(mfu(die_width, die_height), 2)
         die_defect_density_df['MFU'] = die_defect_density_df['MFU'].apply(lambda x: f"{round(x, 2)}%")
         # Save the updated DataFrame back to a new CSV file
