@@ -195,7 +195,7 @@ if st.button("Calculate Yield and Display Table"):
         die_construction_df = edited_df.copy()
         # Read the data into a pandas DataFrame
         technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
-        st.write(edited_df.info())
+        st.write(placeholder_df.info())
         try:
             # Read the die_construction and technology_defect_density files
             #die_construction_df = pd.read_csv(die_construction_file)
