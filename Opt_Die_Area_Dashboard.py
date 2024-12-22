@@ -283,40 +283,41 @@ if st.button("Calculate Yield and Display Table"):
             # output_file = "die_defect_density_updated.csv"
             # die_defect_density_df.to_csv(output_file, index=False, encoding='utf-8')
             # print(f"\nAggregated Die Defect Density, Yield, GDPW, and MFU columns added and saved to {output_file}")
-            st.write("Hello2")
-            # Display the Die Defect Density Table
-            st.subheader("YIELD TABLE")
-
-            # Check if the dataframe is not empty
-            if not die_defect_density_df.empty:
-                # Select only the desired columns
-                display_df = die_defect_density_df[["time", "Die Aggregate DD", "Yield", "GDPW"]]
-
-                # Format and style the table for better readability
-                styled_display_df = display_df.style.format({
-                    "Die Aggregate DD": "{:.2f}",  # Format DD values to 2 decimals
-                    "Yield": "{}",
-                    "GDPW": "{:.2f}"  # Format GDPW values to 2 decimals
-                }).set_table_styles([
-                    {'selector': 'td', 'props': [('text-align', 'center')]},
-                    {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]}
-                ])
-
-                # Render the table with Streamlit's interactive dataframe
-                st.dataframe(styled_display_df, use_container_width=True)
-
-                # Allow downloading the table as CSV
-                csv = display_df.to_csv(index=False).encode('utf-8')
-                st.download_button(
-                    label="Download Die Defect Density Table as CSV",
-                    data=csv,
-                    file_name="die_defect_density_table.csv",
-                    mime="text/csv",
-                )
-            else:
-                st.warning("No data available to display in the Die Defect Density Table.")
+            
         
         except ValueError as ve:
             print(f"Value error: {ve}")
         except Exception as e:
             print(f"An error occurred: {e}")
+
+# Display the Die Defect Density Table
+st.subheader("YIELD TABLE")
+
+# Check if the dataframe is not empty
+if not die_defect_density_df.empty:
+    # Select only the desired columns
+    display_df = die_defect_density_df[["time", "Die Aggregate DD", "Yield", "GDPW"]]
+
+    # Format and style the table for better readability
+    styled_display_df = display_df.style.format({
+        "Die Aggregate DD": "{:.2f}",  # Format DD values to 2 decimals
+        "Yield": "{}",
+        "GDPW": "{:.2f}"  # Format GDPW values to 2 decimals
+    }).set_table_styles([
+        {'selector': 'td', 'props': [('text-align', 'center')]},
+        {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]}
+    ])
+
+    # Render the table with Streamlit's interactive dataframe
+    st.dataframe(styled_display_df, use_container_width=True)
+
+    # Allow downloading the table as CSV
+    csv = display_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download Die Defect Density Table as CSV",
+        data=csv,
+        file_name="die_defect_density_table.csv",
+        mime="text/csv",
+    )
+else:
+    st.warning("No data available to display in the Die Defect Density Table.")
