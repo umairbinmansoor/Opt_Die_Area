@@ -195,9 +195,7 @@ if st.button("Calculate Yield and Display Table"):
         die_construction_df = edited_df.copy()
         # Read the data into a pandas DataFrame
         technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
-        
-        st.write(die_construction_df.columns)
-
+     
         # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
         die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
         if die_construction_df['Area %'].isnull().any():
@@ -229,7 +227,7 @@ if st.button("Calculate Yield and Display Table"):
         area_dict = {}
         
         # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
-        for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/ Efficiency [%]']):
+        for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
             if pd.notna(label) and pd.notna(area):
                 if label not in area_dict:
                     area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
@@ -290,7 +288,7 @@ if st.button("Calculate Yield and Display Table"):
     # Check if the dataframe is not empty
     if not die_defect_density_df.empty:
         # Select only the desired columns
-        display_df = die_defect_density_df[["time", "Die Aggregate DD", "Yield", "GDPW"]]
+        display_df = die_defect_density_df[["Time", "Die Aggregate DD", "Yield", "GDPW"]]
 
         # Format and style the table for better readability
         styled_display_df = display_df.style.format({
