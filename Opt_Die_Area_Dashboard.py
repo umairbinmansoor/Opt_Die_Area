@@ -185,7 +185,7 @@ edited_df = st.data_editor(
 
 # Add a button to trigger YIELD CALCULATION
 if st.button("Calculate Yield and Display Table"):
-    st.write("Hello1")
+    st.write(edited_df)
     # YIELD CALCULATION
     die_construction_df = edited_df.copy()
     # Read the data into a pandas DataFrame
