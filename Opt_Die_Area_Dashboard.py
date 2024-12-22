@@ -277,7 +277,7 @@ if st.button("Calculate Yield and Display Table"):
         # output_file = "die_defect_density_updated.csv"
         # die_defect_density_df.to_csv(output_file, index=False, encoding='utf-8')
         # print(f"\nAggregated Die Defect Density, Yield, GDPW, and MFU columns added and saved to {output_file}")
-
+        st.warning("Hello")
         # Display the Die Defect Density Table
         st.subheader("YIELD TABLE")
 
