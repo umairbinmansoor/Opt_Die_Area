@@ -196,12 +196,8 @@ if st.button("Calculate Yield and Display Table"):
         # Read the data into a pandas DataFrame
         technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
         
-    
-        # Read the die_construction and technology_defect_density files
-        #die_construction_df = pd.read_csv(die_construction_file)
-        #technology_defect_density_df = pd.read_csv(technology_defect_density_file)
-        # die_defect_density_df = pd.DataFrame()
-    
+        st.write(die_construction_df)
+
         # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
         die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
         if die_construction_df['Area %'].isnull().any():
