@@ -1,52 +1,13 @@
-import pandas as pd
 import re
-import numpy as np
-import math
-import sys
-
-# Constants
-RETICLE_X = 26  # mm
-RETICLE_Y = 33  # mm
-RETICLE_A = RETICLE_X * RETICLE_Y
-DIAMETER_OF_WAFER = 300  # mm
-
-# Function to calculate Die Count per Reticle
-def die_count_per_reticle(x_die, y_die, scribe_use_flag=0, scribe_x_width=0, scribe_y_width=0):
-    if scribe_use_flag:
-        x_die += 0.001 * scribe_x_width
-        y_die += 0.001 * scribe_y_width
-    no_of_dies_in_reticle = RETICLE_A // (x_die * y_die)
-    return x_die, y_die, no_of_dies_in_reticle
-
-# Function to calculate MFU
-def mfu(x_die, y_die, scribe_use_flag=0, scribe_x_width=0, scribe_y_width=0):
-    x_die, y_die, die_count = die_count_per_reticle(x_die, y_die, scribe_use_flag, scribe_x_width, scribe_y_width)
-    adie = x_die * y_die
-    mfu_percentage = (adie * die_count / RETICLE_A) * 100
-    return mfu_percentage
-
-
-# Function to calculate PDPW using the provided Die Area (A)
-def calculate_pdpw(a, d):
-    if a > 0:
-        return math.floor((math.pi * d**2 / (4 * a)) * math.exp(-2 * math.sqrt(a) / d))
-    else:
-        return math.nan
-
-# Function to calculate GDPW
-def calculate_gdpw(yield_value, pdpw):
-    return math.floor(yield_value * pdpw)
-
-# Function to calculate Yield
-def calculate_yield(die_area, defect_density, n=1, model_name="seeds_model"):
-    if model_name == "seeds_model":
-        return (1 / (1 + die_area * defect_density)) ** n
-    else:
-        raise ValueError(f"Model '{model_name}' not supported yet.")
+import pandas as pd
+from io import StringIO
+from die_helper import die_count_per_reticle, mfu, calculate_pdpw, calculate_gdpw, calculate_yield, calculate_aggregate_dd
+from die_helper import RETICLE_X, RETICLE_Y, RETICLE_A, DIAMETER_OF_WAFER, tdd_data
 
 # File paths
 die_construction_file = "die_construction.csv"
-technology_defect_density_file = "technology_defect_density_v2.csv"
+# Read the data into a pandas DataFrame
+technology_defect_density_file = pd.read_csv(StringIO(tdd_data), sep="\t")
 
 try:
     # Read the die_construction and technology_defect_density files
@@ -109,28 +70,7 @@ try:
                 column_bracket_dict[label_match.group(1)].update({"Utilization": percentage_match.group(1)})
 
 
-
-    # Calculate 'Die Aggregate DD' using a vectorized approach
-    def calculate_aggregate_dd(row, area_dict, column_bracket_dict):
-        aggregate_value = 0
-        for label, area_list in area_dict.items():
-            if label in column_bracket_dict:
-                column_name = column_bracket_dict[label]['column_name']
-                for area_entry in area_list:
-                    area = area_entry['Area']
-                    utilization = area_entry['Utilization']
-                    if 'Utilization' in column_bracket_dict[label] and utilization:
-                        current_utilization = float(utilization.rstrip('%'))
-                        expected_utilization = float(column_bracket_dict[label]['Utilization'])
-                        if current_utilization == expected_utilization:
-                            aggregate_value += area * row[column_name]
-                        else:
-                            adjusted_value = row[column_name] * (current_utilization / expected_utilization)
-                            aggregate_value += area * adjusted_value
-                    else:
-                        aggregate_value += area * row[column_name]
-        return round(float(aggregate_value), 2)
-
+   
     technology_defect_density_df['Die Aggregate DD'] = technology_defect_density_df.apply(
         lambda row: calculate_aggregate_dd(row, area_dict, column_bracket_dict), axis=1
     )
