@@ -203,7 +203,10 @@ if st.button("Calculate Yield and Display Table"):
             die_defect_density_df = pd.DataFrame()
         
             # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
-            die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float) / 100
+            die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
+            if die_construction_df['Area %'].isnull().any():
+                st.error("Area % contains invalid or missing values.")
+                raise ValueError("Area % contains invalid or missing values.")
             
             die_defect_density_df["time"] = technology_defect_density_df["time"]
 
