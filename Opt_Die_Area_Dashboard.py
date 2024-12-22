@@ -307,7 +307,7 @@ if st.button("Calculate Yield and Display Table"):
         # Allow downloading the table as CSV
         csv = display_df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="Download Die Defect Density Table as CSV",
+            label="Download Yield Table as CSV",
             data=csv,
             file_name="die_defect_density_table.csv",
             mime="text/csv",
