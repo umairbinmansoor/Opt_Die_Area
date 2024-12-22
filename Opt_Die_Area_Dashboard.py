@@ -185,7 +185,7 @@ edited_df = st.data_editor(
 
 # Add a button to trigger YIELD CALCULATION
 if st.button("Calculate Yield and Display Table"):
-    
+    st.write("Hello1")
     # YIELD CALCULATION
     die_construction_df = edited_df.copy()
     # Read the data into a pandas DataFrame
@@ -277,7 +277,7 @@ if st.button("Calculate Yield and Display Table"):
         # output_file = "die_defect_density_updated.csv"
         # die_defect_density_df.to_csv(output_file, index=False, encoding='utf-8')
         # print(f"\nAggregated Die Defect Density, Yield, GDPW, and MFU columns added and saved to {output_file}")
-        st.warning("Hello")
+        st.write("Hello2")
         # Display the Die Defect Density Table
         st.subheader("YIELD TABLE")
 
