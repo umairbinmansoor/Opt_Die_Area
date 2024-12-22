@@ -185,7 +185,7 @@ if not df.empty:
 
 # Check for partially filled columns
 required_columns = ["Area%", "Utilization/Efficiency[%]", "Must Work"]
-missing_columns = [col for col in required_columns if not placeholder_df[col].notna().any()]
+missing_columns = [col for col in required_columns if not edited_df[col].notna().any()]
 
 if missing_columns:
     # Display a warning message and stop further execution
