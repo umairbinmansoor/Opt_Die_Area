@@ -54,7 +54,7 @@ col1, col2 = st.columns([1, 2])  # Two columns layout
 with col1:
     Xdie = st.number_input("Enter Xdie (mm):", min_value=1.0, value=10.0, step=0.1)
     Ydie = st.number_input("Enter Ydie (mm):", min_value=1.0, value=8.0, step=0.1)
-    edge_exclusion_factor = st.number_input("Enter Ydie (mm):", min_value=0.0, value=1.0, step=0.1)
+    edge_exclusion_factor = st.number_input("Edge Exclusion Factor (mm):", min_value=0.0, value=1.0, step=0.1)
     Scribe_use_flag = st.selectbox("Use Scribe Width?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
     Scribe_x_width = st.number_input("Enter Scribe X Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1)
     Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1)
@@ -85,7 +85,7 @@ placeholder_df = pd.DataFrame(dc_data, columns=columns)
 # Display the interactive table
 edited_df = st.data_editor(
     placeholder_df,
-    disabled=("Category", "Subcategory"),
+    disabled=("Category", "Subcategory", "Defectivity Labels"),
     use_container_width=False
 )
 
@@ -107,7 +107,7 @@ for xd, yd in zip(Xdie_values, Ydie_values):
         data.append({
             "Xdie (mm)": round(xd, 2),
             "Ydie (mm)": round(yd, 2),
-            "Adie (mm^2)": round(mfu_data['Adie'], 2),
+            "Adie (mm^2)": round(mfu_data['Die Area'], 2),
             "MFU (%)": round(mfu_data['MFU%'], 2),
             "Aspect Ratio": round(yd / xd, 2)
         })
@@ -116,7 +116,7 @@ mfu_data = mfu(Xdie, Ydie, Scribe_use_flag, Scribe_x_width, Scribe_y_width)
 data.append({
             "Xdie (mm)": round(Xdie, 2),
             "Ydie (mm)": round(Ydie, 2),
-            "Adie (mm^2)": round(mfu_data['Adie'], 2),
+            "Adie (mm^2)": round(mfu_data['Die Area'], 2),
             "MFU (%)": round(mfu_data['MFU%'], 2),
             "Aspect Ratio": round(Ydie / Xdie, 2)
         })
