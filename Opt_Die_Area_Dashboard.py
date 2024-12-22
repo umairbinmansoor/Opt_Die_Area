@@ -197,7 +197,7 @@ if st.button("Calculate Yield and Display Table"):
         technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
      
         # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
-        die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
+        die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='coerce') / 100
         if die_construction_df['Area %'].isnull().any():
             st.error("Area % contains invalid or missing values.")
             #raise ValueError("Area % contains invalid or missing values.")
@@ -293,7 +293,7 @@ if st.button("Calculate Yield and Display Table"):
         # Format and style the table for better readability
         styled_display_df = display_df.style.format({
             "time": "{}",
-            "Die Aggregate DD": "{}",  # Format DD values to 2 decimals
+            "Die Aggregate DD (def/cm^2)": "{}",  # Format DD values to 2 decimals
             "Yield": "{}",
             "GDPW": "{}"  # Format GDPW values to 2 decimals
         }).set_table_styles([
