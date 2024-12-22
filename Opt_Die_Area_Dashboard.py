@@ -273,7 +273,7 @@ if st.button("Calculate Yield and Display Table"):
         die_defect_density_df['GDPW'] = die_defect_density_df['Yield'].apply(lambda yield_value: calculate_gdpw(yield_value, pdpw))
 
         die_defect_density_df['Yield'] = die_defect_density_df['Yield'].apply(lambda y: f"{y * 100:.2f}%")
-        die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float).astype(str) + " (def/cm²)"
+        die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float).astype(str)# + " (def/cm²)"
         die_defect_density_df['MFU'] = round(mfu(die_width, die_height)["MFU%"], 2)
         die_defect_density_df['MFU'] = die_defect_density_df['MFU'].apply(lambda x: f"{round(x, 2)}%")
         # Save the updated DataFrame back to a new CSV file
