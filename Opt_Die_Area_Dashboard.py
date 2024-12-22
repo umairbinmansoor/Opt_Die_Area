@@ -196,7 +196,7 @@ if st.button("Calculate Yield and Display Table"):
         #die_construction_df = pd.read_csv(die_construction_file)
         #technology_defect_density_df = pd.read_csv(technology_defect_density_file)
         die_defect_density_df = pd.DataFrame()
-        
+        st.write("Hello1")
         # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
         die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float) / 100
         
@@ -207,8 +207,7 @@ if st.button("Calculate Yield and Display Table"):
         # die_height = float(input("Enter the height of Die in mm: "))
         die_width = Xdie
         die_height = Ydie
-
-        st.write("Hello1")
+        
         if die_width <= 0 or die_height <= 0:
             raise ValueError("Die dimensions must be positive values.")
         die_area = die_height * die_width
