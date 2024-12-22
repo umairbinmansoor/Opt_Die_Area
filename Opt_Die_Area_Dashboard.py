@@ -292,7 +292,7 @@ if st.button("Calculate Yield and Display Table"):
 
     # Display the Die Defect Density Table
     st.subheader("YIELD TABLE")
-
+    st.write(die_defect_density_df)
     # Check if the dataframe is not empty
     if not die_defect_density_df.empty:
         # Select only the desired columns
