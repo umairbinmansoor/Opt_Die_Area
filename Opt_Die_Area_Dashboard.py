@@ -288,7 +288,7 @@ if st.button("Calculate Yield and Display Table"):
     # Check if the dataframe is not empty
     if not die_defect_density_df.empty:
         # Select only the desired columns
-        display_df = die_defect_density_df[["Time", "Die Aggregate DD", "Yield", "GDPW"]]
+        display_df = die_defect_density_df[["time", "Die Aggregate DD", "Yield", "GDPW"]]
 
         # Format and style the table for better readability
         styled_display_df = display_df.style.format({
