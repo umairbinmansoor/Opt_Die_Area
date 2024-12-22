@@ -192,7 +192,7 @@ if st.button("Calculate Yield and Display Table"):
         st.warning("Please fill in all required fields in the DIE CONSTRUCTION/COMPOSITION table.")
     else:
         # YIELD CALCULATION
-        die_construction_df = placeholder_df.copy()
+        die_construction_df = edited_df.copy()
         # Read the data into a pandas DataFrame
         technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
         
