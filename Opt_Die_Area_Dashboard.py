@@ -196,7 +196,7 @@ if st.button("Calculate Yield and Display Table"):
         #die_construction_df = pd.read_csv(die_construction_file)
         #technology_defect_density_df = pd.read_csv(technology_defect_density_file)
         die_defect_density_df = pd.DataFrame()
-        st.write("Hello1")
+        
         # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
         die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float) / 100
         
@@ -222,7 +222,7 @@ if st.button("Calculate Yield and Display Table"):
         die_defect_density_df['Die Area'] = f"{die_area} mm²"
         # Initialize an empty dictionary for the final area_dict
         area_dict = {}
-
+        st.write("Hello1")
         # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
         for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/ Efficiency [%]']):
             if pd.notna(label) and pd.notna(area):
