@@ -7,27 +7,6 @@ from die_helper import *
 from io import StringIO
 import re
 
-# # Define functions for calculations
-# def Die_count_per_reticle(Xdie, Ydie, Scribe_use_flag=0, Scribe_x_width=0, Scribe_y_width=0):
-#     Reticle_X = 26  # mm
-#     Reticle_Y = 33  # mm
-#     Reticle_A = Reticle_X * Reticle_Y
-
-#     if Scribe_use_flag:
-#         Xdie += 0.001 * Scribe_x_width
-#         Ydie += 0.001 * Scribe_y_width
-
-#     No_of_dies_in_Reticle = Reticle_A // (Xdie * Ydie)
-#     return Xdie, Ydie, Reticle_A, No_of_dies_in_Reticle
-
-# def MFU(Xdie, Ydie, Scribe_use_flag=0, Scribe_x_width=0, Scribe_y_width=0):
-#     MFU_dict = {}
-#     Xdie, Ydie, MFU_dict['Reticle_A'], MFU_dict['Die_count'] = Die_count_per_reticle(
-#         Xdie, Ydie, Scribe_use_flag, Scribe_x_width, Scribe_y_width)
-#     MFU_dict['Adie'] = Xdie * Ydie
-#     MFU_dict['MFU%'] = (MFU_dict['Adie'] * MFU_dict['Die_count'] / MFU_dict['Reticle_A']) * 100
-#     return MFU_dict
-
 # Streamlit app
 st.title("DIE YIELD AND MFU OPTIMIZATION DASHBOARD")
 st.markdown("""
@@ -89,20 +68,20 @@ edited_df = st.data_editor(
     use_container_width=False
 )
 # Button to download Die Construction Template
-if st.button("Download Die Construction Template"):
-    # Create a DataFrame from dc_data and columns
-    template_df = pd.DataFrame(dc_data, columns=columns)
+# if st.button("Download Die Construction Template"):
+# Create a DataFrame from dc_data and columns
+template_df = pd.DataFrame(dc_data, columns=columns)
 
-    # Convert the DataFrame to CSV
-    csv_template = template_df.to_csv(index=False).encode('utf-8')
+# Convert the DataFrame to CSV
+csv_template = template_df.to_csv(index=False).encode('utf-8')
 
-    # Download button
-    st.download_button(
-        label="Download Template as CSV",
-        data=csv_template,
-        file_name="die_construction_template.csv",
-        mime="text/csv",
-    )
+# Download button
+st.download_button(
+    label="Download Template as CSV",
+    data=csv_template,
+    file_name="die_construction_template.csv",
+    mime="text/csv",
+)
 
 # Generate random values
 np.random.seed(42)
@@ -153,7 +132,6 @@ if not df.empty:
 
     # Display as a dataframe to enable sorting
     st.dataframe(styled_df, use_container_width=True)
-
 
     # Allow downloading the table as CSV
     csv = df.to_csv(index=False).encode('utf-8')
