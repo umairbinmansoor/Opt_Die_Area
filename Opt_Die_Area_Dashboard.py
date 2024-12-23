@@ -7,6 +7,47 @@ from die_helper import *
 from io import StringIO
 import re
 
+# Add custom CSS for table and buttons
+st.markdown("""
+    <style>
+        /* Style the table header */
+        table.dataframe thead th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Style the table body */
+        table.dataframe tbody td {
+            background-color: #f2f2f2; /* Light grey shade */
+        }
+
+        /* Add hover effect for rows */
+        table.dataframe tbody tr:hover {
+            background-color: #ddd; /* Slightly darker grey on hover */
+        }
+
+        /* Style all Streamlit buttons */
+        div.stButton > button {
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            border: none; /* Remove border */
+            padding: 8px 16px; /* Add padding */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 5px; /* Rounded corners */
+            transition-duration: 0.4s; /* Smooth transition for hover */
+            cursor: pointer;
+        }
+
+        /* Add hover effect for buttons */
+        div.stButton > button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Streamlit app
 st.title("DIE YIELD AND MFU OPTIMIZATION DASHBOARD")
 st.markdown("""
@@ -67,8 +108,7 @@ edited_df = st.data_editor(
     disabled=("Category", "Subcategory", "Defectivity Labels"),
     use_container_width=False
 )
-# Button to download Die Construction Template
-# if st.button("Download Die Construction Template"):
+
 # Create a DataFrame from dc_data and columns
 template_df = pd.DataFrame(dc_data, columns=columns)
 
