@@ -140,6 +140,36 @@ if not df.empty:
 else:
     st.warning("No valid data found for the given input values.")
 
+# Table placeholder
+st.subheader("DIE CONSTRUCTION/COMPOSITION")
+
+# Create a DataFrame with the specified column names and empty cells
+columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+placeholder_df = pd.DataFrame(dc_data, columns=columns)
+
+# Display the interactive table
+edited_df = st.data_editor(
+    placeholder_df,
+    disabled=("Category", "Subcategory", "Defectivity Labels"),
+    use_container_width=False
+)
+
+# Button to download Die Construction Template
+if st.button("Download Die Construction Template"):
+    # Create a DataFrame from dc_data and columns
+    template_df = pd.DataFrame(dc_data, columns=columns)
+
+    # Convert the DataFrame to CSV
+    csv_template = template_df.to_csv(index=False).encode('utf-8')
+
+    # Download button
+    st.download_button(
+        label="Download Template as CSV",
+        data=csv_template,
+        file_name="die_construction_template.csv",
+        mime="text/csv",
+    )
+
 # Contour plot of MFU
 if not df.empty:
     st.subheader("Contour Plot of MFU")
@@ -169,19 +199,6 @@ if not df.empty:
     ax.legend()
     st.pyplot(fig)
 
-# Table placeholder
-st.subheader("DIE CONSTRUCTION/COMPOSITION")
-
-# Create a DataFrame with the specified column names and empty cells
-columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
-placeholder_df = pd.DataFrame(dc_data, columns=columns)
-
-# Display the interactive table
-edited_df = st.data_editor(
-    placeholder_df,
-    disabled=("Category", "Subcategory", "Defectivity Labels"),
-    use_container_width=False
-)
 die_defect_density_df = pd.DataFrame()
 # Add a button to trigger YIELD CALCULATION
 if st.button("Calculate Yield and Display Table"):
