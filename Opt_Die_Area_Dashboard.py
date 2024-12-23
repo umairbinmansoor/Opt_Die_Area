@@ -75,6 +75,35 @@ with col2:
     ax.set_ylabel("Ydie (mm)", fontsize=8)
     st.pyplot(fig)
 
+# Table placeholder
+st.subheader("DIE CONSTRUCTION/COMPOSITION")
+
+# Create a DataFrame with the specified column names and empty cells
+columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+placeholder_df = pd.DataFrame(dc_data, columns=columns)
+
+# Display the interactive table
+edited_df = st.data_editor(
+    placeholder_df,
+    disabled=("Category", "Subcategory", "Defectivity Labels"),
+    use_container_width=False
+)
+# Button to download Die Construction Template
+if st.button("Download Die Construction Template"):
+    # Create a DataFrame from dc_data and columns
+    template_df = pd.DataFrame(dc_data, columns=columns)
+
+    # Convert the DataFrame to CSV
+    csv_template = template_df.to_csv(index=False).encode('utf-8')
+
+    # Download button
+    st.download_button(
+        label="Download Template as CSV",
+        data=csv_template,
+        file_name="die_construction_template.csv",
+        mime="text/csv",
+    )
+
 # Generate random values
 np.random.seed(42)
 Xdie_values = np.random.normal(Xdie, 0.5, 1000)
@@ -112,9 +141,6 @@ df = pd.DataFrame(data)
 # Display table
 st.subheader("OPTIMAL MFU TABLE")
 if not df.empty:
-    # # Reset the index and add it as a column to preserve original indexing
-    # df_with_index = df.reset_index()
-    # df_with_index.rename(columns={'index': 'Original Index'}, inplace=True)
     
     # Styling the table for better impact
     styled_df = df.style.format(
@@ -139,36 +165,6 @@ if not df.empty:
     )
 else:
     st.warning("No valid data found for the given input values.")
-
-# Table placeholder
-st.subheader("DIE CONSTRUCTION/COMPOSITION")
-
-# Create a DataFrame with the specified column names and empty cells
-columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
-placeholder_df = pd.DataFrame(dc_data, columns=columns)
-
-# Display the interactive table
-edited_df = st.data_editor(
-    placeholder_df,
-    disabled=("Category", "Subcategory", "Defectivity Labels"),
-    use_container_width=False
-)
-
-# Button to download Die Construction Template
-if st.button("Download Die Construction Template"):
-    # Create a DataFrame from dc_data and columns
-    template_df = pd.DataFrame(dc_data, columns=columns)
-
-    # Convert the DataFrame to CSV
-    csv_template = template_df.to_csv(index=False).encode('utf-8')
-
-    # Download button
-    st.download_button(
-        label="Download Template as CSV",
-        data=csv_template,
-        file_name="die_construction_template.csv",
-        mime="text/csv",
-    )
 
 # Contour plot of MFU
 if not df.empty:
