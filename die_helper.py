@@ -17,7 +17,7 @@ dc_data = [
     ["", "RF", "RFDD", None, None, None, None],
     ["", "Recovery", "", None, None, None, None],
     ["Mesh", "", "MDD", None, None, None, None],
-    ["White\nSpace", "", "MDD", None, None, None, None],
+    ["White Space", "", "MDD", None, None, None, None],
     ["Analog", "", "ADD", None, None, None, None]
 ]
 
