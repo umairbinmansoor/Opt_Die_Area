@@ -257,10 +257,28 @@ if st.button("Calculate Yield and Display Table"):
     st.write("Button Pressed!")  # Debugging line to confirm button functionality
 
     # Validate input table data, accommodating for missing values in the selected columns
-    required_columns = ["Area %", "Utilization/Efficiency[%]", "Must Work"]
+    # required_columns = ["Area %", "Utilization/Efficiency[%]", "Must Work"]
 
-    if edited_df[required_columns].replace("", np.nan).isnull().any().any():
-        st.warning("Please fill in all required fields in the DIE CONSTRUCTION/COMPOSITION table.")
+    # Example: Define specific cells to validate (row, column)
+    cells_to_check = [(1, "Area %"), (1, "Utilization/Efficiency[%]"), (1, "Must Work"),
+                      (2, "Area %"), (2, "Utilization/Efficiency[%]"), (2, "Must Work"),
+                      (3, "Area %"), (4, "Utilization/Efficiency[%]"), 
+                      (4, "Area %"), (5, "Utilization/Efficiency[%]"), 
+                      (5, "Area %"), (8, "Utilization/Efficiency[%]"), 
+                      (6, "Area %"), (9, "Utilization/Efficiency[%]"), 
+                      (7, "Area %"), 
+                      (8, "Area %"), 
+                      (9, "Area %"), 
+                      (10, "Area %")]
+
+    # Check if any of these specific cells are missing (NaN or empty string)
+    missing_values = any(
+        pd.isnull(edited_df.at[row, col]) or edited_df.at[row, col] == ""
+        for row, col in cells_to_check
+        )
+
+    if missing_values:
+        st.warning("Please fill in the required cells in the DIE CONSTRUCTION/COMPOSITION table.")
     else:
         # YIELD CALCULATION
         die_construction_df = edited_df.copy()
