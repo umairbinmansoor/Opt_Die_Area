@@ -131,7 +131,7 @@ with col2:
     # File uploader for filled template
     uploaded_file = st.file_uploader("Upload Filled Template", type=["csv"])
 
-# If a file is uploaded, process and update the table
+# Display the table placeholder
 if uploaded_file is not None:
     try:
         # Read the uploaded file into a DataFrame
@@ -140,17 +140,20 @@ if uploaded_file is not None:
         # Validate the uploaded DataFrame
         if set(columns) == set(uploaded_df.columns):
             st.success("Template uploaded successfully! Displaying updated table below:")
-
-            # Display the uploaded values in the DIE CONSTRUCTION/COMPOSITION table
-            edited_df = st.data_editor(
-                uploaded_df,
-                disabled=("Category", "Subcategory", "Defectivity Labels"),
-                use_container_width=False
-            )
+            
+            # Update the placeholder DataFrame with uploaded data
+            placeholder_df = uploaded_df
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
     except Exception as e:
         st.error(f"An error occurred while processing the file: {e}")
+
+# Display the interactive DIE CONSTRUCTION/COMPOSITION table with updated data
+edited_df = st.data_editor(
+    placeholder_df,
+    disabled=("Category", "Subcategory", "Defectivity Labels"),
+    use_container_width=False
+)
 
 # Generate random values
 np.random.seed(42)
