@@ -401,5 +401,36 @@ if st.button("Calculate Yield and Display Table"):
             file_name="die_defect_density_table.csv",
             mime="text/csv",
         )
+
+        # Sample data (replace these with your actual variables from your data)
+        time = die_defect_density_df["time"].values  # Example time variable
+        die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
+        yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
+
+        # Create a single figure with two plots
+        fig, ax1 = plt.subplots(figsize=(10, 6))
+
+        # Plot Die Aggregate DD on the left y-axis
+        ax1.set_xlabel("Time")
+        ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
+        ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
+        ax1.tick_params(axis="y", labelcolor="tab:blue")
+
+        # Create a twin y-axis for Yield on the same figure
+        ax2 = ax1.twinx()
+        ax2.set_ylabel("Yield (%)", color="tab:green")
+        ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
+        ax2.tick_params(axis="y", labelcolor="tab:green")
+
+        # Add legends and title
+        fig.suptitle("Die Aggregate DD and Yield vs Time", fontsize=14)
+        ax1.legend(loc="upper left")
+        ax2.legend(loc="upper right")
+
+        # Show grid
+        ax1.grid(visible=True, linestyle="--", alpha=0.5)
+
+        # Display the plot in Streamlit after the Yield Table
+        st.pyplot(fig)
     else:
         st.warning("No data available to display in the Die Defect Density Table.")
