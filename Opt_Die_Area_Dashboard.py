@@ -155,7 +155,7 @@ if uploaded_file is not None:
             #     disabled=("Category", "Subcategory", "Defectivity Labels"),
             #     use_container_width=False,
             #     key="updated_die_construction_table"  # Another unique key
-            )
+            # )
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
     except Exception as e:
