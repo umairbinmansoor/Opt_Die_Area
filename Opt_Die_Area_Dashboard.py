@@ -256,8 +256,10 @@ die_defect_density_df = pd.DataFrame()
 if st.button("Calculate Yield and Display Table"):
     st.write("Button Pressed!")  # Debugging line to confirm button functionality
 
-    # Validate input table data
-    if edited_df[["Area %", "Utilization/Efficiency[%]", "Must Work"]].isnull().any().any():
+    # Validate input table data, accommodating for missing values in the selected columns
+    required_columns = ["Area %", "Utilization/Efficiency[%]", "Must Work"]
+
+    if edited_df[required_columns].replace("", float("NaN")).isnull().any().any():
         st.warning("Please fill in all required fields in the DIE CONSTRUCTION/COMPOSITION table.")
     else:
         # YIELD CALCULATION
