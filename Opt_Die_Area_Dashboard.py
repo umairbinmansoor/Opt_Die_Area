@@ -277,7 +277,7 @@ if st.button("Calculate Yield and Display Table"):
         for row, col in cells_to_check
         )
 
-    if missing_values:
+    if not missing_values:
         st.warning("Please fill in the required cells in the DIE CONSTRUCTION/COMPOSITION table.")
     else:
         # YIELD CALCULATION
