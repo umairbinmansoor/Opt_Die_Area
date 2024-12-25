@@ -416,6 +416,10 @@ if st.button("Calculate Yield and Display Table"):
         ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
         ax1.tick_params(axis="y", labelcolor="tab:blue")
 
+        # Rotate the time axis ticks
+        ax1.set_xticks(time)  # Align the ticks with the time variable
+        ax1.set_xticklabels(time, rotation=90)  # Rotate the tick labels vertically
+
         # Create a twin y-axis for Yield on the same figure
         ax2 = ax1.twinx()
         ax2.set_ylabel("Yield (%)", color="tab:green")
