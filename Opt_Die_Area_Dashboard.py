@@ -115,13 +115,42 @@ template_df = pd.DataFrame(dc_data, columns=columns)
 # Convert the DataFrame to CSV
 csv_template = template_df.to_csv(index=False).encode('utf-8')
 
-# Download button
-st.download_button(
-    label="Download Template as CSV",
-    data=csv_template,
-    file_name="die_construction_template.csv",
-    mime="text/csv",
-)
+# Add download and upload buttons side by side
+col1, col2 = st.columns([1, 1])  # Two columns for alignment
+
+with col1:
+    # Download button for template CSV
+    st.download_button(
+        label="Download Template as CSV",
+        data=csv_template,
+        file_name="die_construction_template.csv",
+        mime="text/csv",
+    )
+
+with col2:
+    # File uploader for filled template
+    uploaded_file = st.file_uploader("Upload Filled Template", type=["csv"])
+
+# If a file is uploaded, process and update the table
+if uploaded_file is not None:
+    try:
+        # Read the uploaded file into a DataFrame
+        uploaded_df = pd.read_csv(uploaded_file)
+
+        # Validate the uploaded DataFrame
+        if set(columns) == set(uploaded_df.columns):
+            st.success("Template uploaded successfully! Displaying updated table below:")
+
+            # Display the uploaded values in the DIE CONSTRUCTION/COMPOSITION table
+            edited_df = st.data_editor(
+                uploaded_df,
+                disabled=("Category", "Subcategory", "Defectivity Labels"),
+                use_container_width=False
+            )
+        else:
+            st.error("Uploaded file does not match the template format. Please use the provided template.")
+    except Exception as e:
+        st.error(f"An error occurred while processing the file: {e}")
 
 # Generate random values
 np.random.seed(42)
