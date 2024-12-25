@@ -147,7 +147,7 @@ if uploaded_file is not None:
             st.success("Template uploaded successfully! Displaying updated table below:")
             
             # Update the placeholder DataFrame with uploaded data
-            placeholder_df = uploaded_df
+            edited_df = uploaded_df.copy()
 
             # Display the updated data editor
             # edited_df = st.data_editor(
