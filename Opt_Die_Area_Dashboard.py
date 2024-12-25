@@ -147,15 +147,15 @@ if uploaded_file is not None:
             st.success("Template uploaded successfully! Displaying updated table below:")
             
             # Update the placeholder DataFrame with uploaded data
-            # edited_df = uploaded_df.copy()
+            edited_df = uploaded_df.copy()
 
-            # Display the updated data editor
-            edited_df = st.data_editor(
-                uploaded_df,#placeholder_df,
-                disabled=("Category", "Subcategory", "Defectivity Labels"),
-                use_container_width=False,
-                key="updated_die_construction_table"  # Another unique key
-            )
+            # # Display the updated data editor
+            # edited_df = st.data_editor(
+            #     uploaded_df,#placeholder_df,
+            #     disabled=("Category", "Subcategory", "Defectivity Labels"),
+            #     use_container_width=False,
+            #     key="updated_die_construction_table"  # Another unique key
+            # )
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
     except Exception as e:
