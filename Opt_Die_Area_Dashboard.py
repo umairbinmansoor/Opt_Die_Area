@@ -259,7 +259,7 @@ if st.button("Calculate Yield and Display Table"):
     # Validate input table data, accommodating for missing values in the selected columns
     required_columns = ["Area %", "Utilization/Efficiency[%]", "Must Work"]
 
-    if edited_df[required_columns].replace("", float("NaN")).isnull().any().any():
+    if edited_df[required_columns].replace(None, float("NaN")).isnull().any().any():
         st.warning("Please fill in all required fields in the DIE CONSTRUCTION/COMPOSITION table.")
     else:
         # YIELD CALCULATION
