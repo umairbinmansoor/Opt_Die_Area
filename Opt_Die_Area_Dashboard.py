@@ -103,14 +103,56 @@ if uploaded_file is not None:
 
         # Validate the uploaded DataFrame
         if set(columns) == set(uploaded_df.columns):
-            st.success("Template uploaded successfully! Displaying updated table below:")
+            st.success("Template uploaded successfully! Displaying updated table and pie charts below:")
             
             # Update the placeholder DataFrame with uploaded data
             edited_df = uploaded_df.copy()
 
+            # Layout for table and pie charts
+            table_col, pie_col = st.columns([1, 1])  # Two columns for alignment
             
-        else:
-            st.error("Uploaded file does not match the template format. Please use the provided template.")
+            with table_col:
+                st.subheader("DIE CONSTRUCTION/COMPOSITION")
+                st.data_editor(
+                    edited_df,
+                    disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+                    use_container_width=False,
+                    height=400  # Adjust height to make space for the pie chart
+                )
+
+            with pie_col:
+                st.subheader("Area % Distribution")
+
+                # Ensure Area % column is numeric
+                edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
+
+                # Pie Chart based on Category
+                fig1, ax1 = plt.subplots()
+                category_data = edited_df.groupby("Category")["Area %"].sum()
+                ax1.pie(
+                    category_data,
+                    labels=category_data.index,
+                    autopct="%1.1f%%",
+                    startangle=90,
+                    colors=plt.cm.Paired.colors
+                )
+                ax1.set_title("Area % by Category", fontsize=12)
+                ax1.set_aspect("equal")  # Ensure the pie chart is circular
+                st.pyplot(fig1)
+
+                # Pie Chart based on Subcategory
+                fig2, ax2 = plt.subplots()
+                subcategory_data = edited_df.groupby("Subcategory")["Area %"].sum()
+                ax2.pie(
+                    subcategory_data,
+                    labels=subcategory_data.index,
+                    autopct="%1.1f%%",
+                    startangle=90,
+                    colors=plt.cm.Set3.colors
+                )
+                ax2.set_title("Area % by Subcategory", fontsize=12)
+                ax2.set_aspect("equal")
+                st.pyplot(fig2)
     except Exception as e:
         st.error(f"An error occurred while processing the file: {e}")
 
