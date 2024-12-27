@@ -122,19 +122,20 @@ if uploaded_file is not None:
                 )
 
             with pie_col:
-                st.subheader("Interactive Area % Distribution")
+                st.subheader("Area % Distribution")
 
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
+                pie_area_df = edited_df.groupby("Category")["Area %"].sum().reset_index()
 
                 # Generate the interactive pie chart
                 pie_chart = px.pie(
-                    edited_df,
+                    pie_area_df,
                     names="Category",
                     values="Area %",
                     color="Category",
                     hover_data=["Subcategory"],
-                    title="Interactive Area % Distribution",
+                    title="Area % Distribution",
                     hole=0.4,  # Creates a donut chart
                 )
 
