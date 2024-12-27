@@ -10,12 +10,12 @@ DIAMETER_OF_WAFER = 300  # mm
 
 dc_data = [
     ["Logic", "short Ht", "SDD", None, None, None, None],
-    ["", "Med Ht", "MDD", None, None, None, None],
-    ["", "Recovery", "", None, None, None, None],
+    ["Logic", "Med Ht", "MDD", None, None, None, None],
+    ["Logic", "Recovery", "", None, None, None, None],
     ["Memory", "HDC", "HDCDD", None, None, None, None],
-    ["", "HCC", "HCDD", None, None, None, None],
-    ["", "RF", "RFDD", None, None, None, None],
-    ["", "Recovery", "", None, None, None, None],
+    ["Memory", "HCC", "HCDD", None, None, None, None],
+    ["Memory", "RF", "RFDD", None, None, None, None],
+    ["Memory", "Recovery", "", None, None, None, None],
     ["Mesh", "", "MDD", None, None, None, None],
     ["White Space", "", "MDD", None, None, None, None],
     ["Analog", "", "ADD", None, None, None, None]
