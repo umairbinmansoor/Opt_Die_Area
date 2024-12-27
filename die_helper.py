@@ -124,9 +124,9 @@ def calculate_aggregate_dd(row, area_dict, column_bracket_dict):
                     aggregate_value += area * row[column_name]
     return round(float(aggregate_value), 2)
 
-# Function to style the dataframe as an HTML table
+# Function to apply styles
 def style_dataframe(df):
-    # Apply styles to the dataframe and render as HTML
+    # Apply styles to the dataframe
     styled_df = df.style.set_table_styles(
         [
             {
@@ -146,6 +146,5 @@ def style_dataframe(df):
             "color": "darkblue",
         },
         subset=pd.IndexSlice[:, :],  # Apply bold text to all data cells
-    ).hide(axis="index")  # Hide the index if not needed
-
-    return styled_df.to_html(escape=False)  # Convert the styled dataframe to HTML
+    )
+    return styled_df
