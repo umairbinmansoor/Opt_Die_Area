@@ -7,46 +7,46 @@ from die_helper import *
 from io import StringIO
 import re
 
-# Add custom CSS for table and buttons
-st.markdown("""
-    <style>
-        /* Style the table header */
-        table.dataframe thead th {
-            background-color: #4CAF50;
-            color: white;
-        }
+# # Add custom CSS for table and buttons
+# st.markdown("""
+#     <style>
+#         /* Style the table header */
+#         table.dataframe thead th {
+#             background-color: #4CAF50;
+#             color: white;
+#         }
 
-        /* Style the table body */
-        table.dataframe tbody td {
-            background-color: #f2f2f2; /* Light grey shade */
-        }
+#         /* Style the table body */
+#         table.dataframe tbody td {
+#             background-color: #f2f2f2; /* Light grey shade */
+#         }
 
-        /* Add hover effect for rows */
-        table.dataframe tbody tr:hover {
-            background-color: #ddd; /* Slightly darker grey on hover */
-        }
+#         /* Add hover effect for rows */
+#         table.dataframe tbody tr:hover {
+#             background-color: #ddd; /* Slightly darker grey on hover */
+#         }
 
-        /* Style all Streamlit buttons */
-        div.stButton > button {
-            background-color: #4CAF50; /* Green background */
-            color: white; /* White text */
-            border: none; /* Remove border */
-            padding: 8px 16px; /* Add padding */
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            border-radius: 5px; /* Rounded corners */
-            transition-duration: 0.4s; /* Smooth transition for hover */
-            cursor: pointer;
-        }
+#         /* Style all Streamlit buttons */
+#         div.stButton > button {
+#             background-color: #4CAF50; /* Green background */
+#             color: white; /* White text */
+#             border: none; /* Remove border */
+#             padding: 8px 16px; /* Add padding */
+#             text-align: center;
+#             text-decoration: none;
+#             display: inline-block;
+#             font-size: 14px;
+#             border-radius: 5px; /* Rounded corners */
+#             transition-duration: 0.4s; /* Smooth transition for hover */
+#             cursor: pointer;
+#         }
 
-        /* Add hover effect for buttons */
-        div.stButton > button:hover {
-            background-color: #45a049; /* Darker green on hover */
-        }
-    </style>
-""", unsafe_allow_html=True)
+#         /* Add hover effect for buttons */
+#         div.stButton > button:hover {
+#             background-color: #45a049; /* Darker green on hover */
+#         }
+#     </style>
+# """, unsafe_allow_html=True)
 
 # Streamlit app
 st.title("DIE YIELD AND MFU OPTIMIZATION DASHBOARD")
@@ -56,17 +56,17 @@ This dashboard allows you to input die dimensions (Xdie and Ydie) and view:
 - A contour plot of MFU with Xdie and Ydie axes.
 """)
 
-# Custom CSS to adjust input field width
-st.markdown("""
-    <style>
-        div[data-testid="stNumberInput"] > div > div > input {
-            width: 120px !important;
-        }
-        div[data-testid="stSelectbox"] > div > div > select {
-            width: 120px !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
+# # Custom CSS to adjust input field width
+# st.markdown("""
+#     <style>
+#         div[data-testid="stNumberInput"] > div > div > input {
+#             width: 120px !important;
+#         }
+#         div[data-testid="stSelectbox"] > div > div > select {
+#             width: 120px !important;
+#         }
+#     </style>
+# """, unsafe_allow_html=True)
 
 # Input fields in columns for better layout
 col1, col2 = st.columns([1, 2])  # Two columns layout
