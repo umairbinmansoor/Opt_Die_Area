@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.express as px
 from scipy.optimize import curve_fit
 from die_helper import *
 from io import StringIO
@@ -121,38 +122,27 @@ if uploaded_file is not None:
                 )
 
             with pie_col:
-                st.subheader("Area % Distribution")
+                st.subheader("Interactive Area % Distribution")
 
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
 
-                # Pie Chart based on Category
-                fig1, ax1 = plt.subplots()
-                category_data = edited_df.groupby("Category")["Area %"].sum()
-                ax1.pie(
-                    category_data,
-                    labels=category_data.index,
-                    autopct="%1.1f%%",
-                    startangle=90,
-                    colors=plt.cm.Paired.colors
+                # Generate the interactive pie chart
+                pie_chart = px.pie(
+                    edited_df,
+                    names="Category",
+                    values="Area %",
+                    color="Category",
+                    hover_data=["Subcategory"],
+                    title="Interactive Area % Distribution",
+                    hole=0.4,  # Creates a donut chart
                 )
-                ax1.set_title("Area % by Category", fontsize=12)
-                ax1.set_aspect("equal")  # Ensure the pie chart is circular
-                st.pyplot(fig1)
 
-                # Pie Chart based on Subcategory
-                fig2, ax2 = plt.subplots()
-                subcategory_data = edited_df.groupby("Subcategory")["Area %"].sum()
-                ax2.pie(
-                    subcategory_data,
-                    labels=subcategory_data.index,
-                    autopct="%1.1f%%",
-                    startangle=90,
-                    colors=plt.cm.Set3.colors
-                )
-                ax2.set_title("Area % by Subcategory", fontsize=12)
-                ax2.set_aspect("equal")
-                st.pyplot(fig2)
+                # Display the pie chart in Streamlit
+                st.plotly_chart(pie_chart, use_container_width=True)
+                
+        else:
+            st.error("Uploaded file does not match the template format. Please use the provided template.")
     except Exception as e:
         st.error(f"An error occurred while processing the file: {e}")
 
