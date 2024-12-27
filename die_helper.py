@@ -127,7 +127,7 @@ def calculate_aggregate_dd(row, area_dict, column_bracket_dict):
 # Function to apply styles
 def style_dataframe(df, col_dict):
     # Apply styles to the dataframe
-    styled_df = df.style.set_table_styles(
+    styled_df = df.style.format(col_dict).set_table_styles(
         [
             {
                 "selector": "thead th",  # Styling the column header
@@ -140,7 +140,7 @@ def style_dataframe(df, col_dict):
                 ],
             }
         ]
-    ).format(col_dict).set_properties(
+    ).set_properties(
         **{
             "font-weight": "bold",
             "color": "darkblue",
