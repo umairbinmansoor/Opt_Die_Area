@@ -391,7 +391,7 @@ if st.button("Calculate Yield and Display Table"):
         ])
 
         # Render the table with Streamlit's interactive dataframe
-        st.dataframe(style_dataframe(display_df), use_container_width=True)
+        st.dataframe(styled_display_df, use_container_width=True)
 
         # Allow downloading the table as CSV
         csv = display_df.to_csv(index=False).encode('utf-8')
