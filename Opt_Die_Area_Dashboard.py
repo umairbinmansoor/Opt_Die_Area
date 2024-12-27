@@ -134,7 +134,7 @@ if uploaded_file is not None:
                     names="Category",
                     values="Area %",
                     color="Category",
-                    hover_data=["Subcategory"],
+                    hover_data=["Category"],
                     title="Area % Distribution",
                     hole=0.4,  # Creates a donut chart
                 )
