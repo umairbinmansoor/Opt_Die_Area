@@ -64,7 +64,7 @@ placeholder_df = pd.DataFrame(dc_data, columns=columns)
 # Display the interactive table
 edited_df = st.data_editor(
     placeholder_df,
-    disabled=("Category", "Subcategory", "Defectivity Labels"),
+    disabled=("Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
     use_container_width=False
 )
 
