@@ -122,7 +122,7 @@ if uploaded_file is not None:
                 )
 
             with pie_col:
-                st.subheader("Area % Distribution")
+                # st.subheader("Area % Distribution")
 
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
