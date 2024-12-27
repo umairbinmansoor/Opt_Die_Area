@@ -123,3 +123,28 @@ def calculate_aggregate_dd(row, area_dict, column_bracket_dict):
                 else:
                     aggregate_value += area * row[column_name]
     return round(float(aggregate_value), 2)
+
+# Function to apply styles
+def style_dataframe(df):
+    # Apply styles to the dataframe
+    styled_df = df.style.set_table_styles(
+        [
+            {
+                "selector": "thead th",  # Styling the column header
+                "props": [
+                    ("background-color", "lightblue"),
+                    ("color", "black"),
+                    ("font-weight", "bold"),
+                    ("font-size", "14px"),
+                    ("text-align", "center"),
+                ],
+            }
+        ]
+    ).set_properties(
+        **{
+            "font-weight": "bold",
+            "color": "darkblue",
+        },
+        subset=pd.IndexSlice[:, :],  # Apply bold text to all data cells
+    )
+    return styled_df
