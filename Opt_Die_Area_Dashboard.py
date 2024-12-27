@@ -250,7 +250,7 @@ if st.button("Calculate Yield and Display Table"):
             st.error("Area % contains invalid or missing values.")
             #raise ValueError("Area % contains invalid or missing values.")
         
-        die_defect_density_df["time"] = technology_defect_density_df["time"]
+        die_defect_density_df["Time"] = technology_defect_density_df["Time"]
 
         # User input for A (Area of a Die)
         # die_width = float(input("Enter the width of Die in mm: "))
@@ -336,7 +336,7 @@ if st.button("Calculate Yield and Display Table"):
     # Check if the dataframe is not empty
     if not die_defect_density_df.empty:
         # Select only the desired columns
-        display_df = die_defect_density_df[["time", "Die Aggregate DD", "Yield", "GDPW"]]
+        display_df = die_defect_density_df[["Time", "Die Aggregate DD", "Yield", "GDPW"]]
        
         # Format and style the table for better readability
         styled_display_df = display_df.style.format({

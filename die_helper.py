@@ -23,7 +23,7 @@ dc_data = [
 
 # Multi-line string representation of the technology defect density table
 tdd_data = """
-time	Short Ht DD [SDD] at 45%	Mid Ht DD [MDD] at 50%	HDC DD [HDDD]	HCD DD w/R [HDDDR]	HCC DD [HCDD]	HCC DD w/R [HCDDR]	RF DD [RFDD]	RF DD w/R [RFDDR]	Analog DD [ADD]	Used For Calc [junk]
+Time	Short Ht DD [SDD] at 45%	Mid Ht DD [MDD] at 50%	HDC DD [HDDD]	HCD DD w/R [HDDDR]	HCC DD [HCDD]	HCC DD w/R [HCDDR]	RF DD [RFDD]	RF DD w/R [RFDDR]	Analog DD [ADD]	Used For Calc [junk]
 12/30/2024	4	3.8	6.7	5.7	5.6	4.5	4.7	3.6	4.2	
 3/30/2025	3.9	3.7	6.6	5.6	5.5	4.4	4.6	3.5	4.1	0.1
 6/30/2025	3.79375	3.59375	6.49375	5.49375	5.39375	4.29375	4.49375	3.39375	3.99375	0.10625
