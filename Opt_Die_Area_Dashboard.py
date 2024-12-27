@@ -7,47 +7,6 @@ from die_helper import *
 from io import StringIO
 import re
 
-# # Add custom CSS for table and buttons
-# st.markdown("""
-#     <style>
-#         /* Style the table header */
-#         table.dataframe thead th {
-#             background-color: #4CAF50;
-#             color: white;
-#         }
-
-#         /* Style the table body */
-#         table.dataframe tbody td {
-#             background-color: #f2f2f2; /* Light grey shade */
-#         }
-
-#         /* Add hover effect for rows */
-#         table.dataframe tbody tr:hover {
-#             background-color: #ddd; /* Slightly darker grey on hover */
-#         }
-
-#         /* Style all Streamlit buttons */
-#         div.stButton > button {
-#             background-color: #4CAF50; /* Green background */
-#             color: white; /* White text */
-#             border: none; /* Remove border */
-#             padding: 8px 16px; /* Add padding */
-#             text-align: center;
-#             text-decoration: none;
-#             display: inline-block;
-#             font-size: 14px;
-#             border-radius: 5px; /* Rounded corners */
-#             transition-duration: 0.4s; /* Smooth transition for hover */
-#             cursor: pointer;
-#         }
-
-#         /* Add hover effect for buttons */
-#         div.stButton > button:hover {
-#             background-color: #45a049; /* Darker green on hover */
-#         }
-#     </style>
-# """, unsafe_allow_html=True)
-
 # Streamlit app
 st.title("DIE YIELD AND MFU OPTIMIZATION DASHBOARD")
 st.markdown("""
@@ -378,20 +337,15 @@ if st.button("Calculate Yield and Display Table"):
     if not die_defect_density_df.empty:
         # Select only the desired columns
         display_df = die_defect_density_df[["time", "Die Aggregate DD", "Yield", "GDPW"]]
-
-        # Format and style the table for better readability
-        styled_display_df = display_df.style.format({
-            "time": "{}",
+        col_dict = {
+            "Time": "{}",
             "Die Aggregate DD (def/cm^2)": "{}",  # Format DD values to 2 decimals
             "Yield": "{}",
             "GDPW": "{}"  # Format GDPW values to 2 decimals
-        }).set_table_styles([
-            {'selector': 'td', 'props': [('text-align', 'center')]},
-            {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]}
-        ])
-
+        }
+    
         # Render the table with Streamlit's interactive dataframe
-        st.dataframe(style_dataframe(display_df), use_container_width=True)
+        st.dataframe(style_dataframe(display_df, col_dict), use_container_width=True)
         
         # Allow downloading the table as CSV
         csv = display_df.to_csv(index=False).encode('utf-8')
