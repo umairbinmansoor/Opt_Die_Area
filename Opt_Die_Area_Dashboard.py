@@ -68,41 +68,6 @@ edited_df = st.data_editor(
     use_container_width=False
 )
 
-# Extract the "Area %" column and remove the "%" sign for numerical calculations
-placeholder_df["Area %"] = placeholder_df["Area %"].str.rstrip("%").astype(float)
-
-# Layout for side-by-side display
-col1, col2 = st.columns([1, 1])  # Adjust proportions if needed
-
-# Column 1: Display the DIE CONSTRUCTION/COMPOSITION table
-with col1:
-    st.subheader("DIE CONSTRUCTION/COMPOSITION")
-    st.data_editor(
-        placeholder_df,
-        disabled=("Category", "Subcategory", "Defectivity Labels"),
-        use_container_width=True,
-        height=300,  # Adjust height to make space for the pie chart
-    )
-
-# Column 2: Display the pie chart
-with col2:
-    st.subheader("Area % Distribution")
-    fig, ax = plt.subplots()
-
-    # Create the pie chart
-    ax.pie(
-        placeholder_df["Area %"], 
-        labels=placeholder_df["Category"].replace("", "Other"),  # Handle blank categories
-        autopct="%1.1f%%", 
-        startangle=90,
-        colors=plt.cm.Paired.colors
-    )
-    ax.set_aspect("equal")  # Equal aspect ratio ensures the pie chart is circular
-    plt.title("Area % Distribution by Category")
-
-    # Display the pie chart
-    st.pyplot(fig)
-
 # Create a DataFrame from dc_data and columns
 template_df = pd.DataFrame(dc_data, columns=columns)
 
@@ -143,13 +108,7 @@ if uploaded_file is not None:
             # Update the placeholder DataFrame with uploaded data
             edited_df = uploaded_df.copy()
 
-            # # Display the updated data editor
-            # edited_df = st.data_editor(
-            #     uploaded_df,#placeholder_df,
-            #     disabled=("Category", "Subcategory", "Defectivity Labels"),
-            #     use_container_width=False,
-            #     key="updated_die_construction_table"  # Another unique key
-            # )
+            
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
     except Exception as e:
