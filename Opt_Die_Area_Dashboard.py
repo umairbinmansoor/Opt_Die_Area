@@ -401,7 +401,7 @@ if st.button("Calculate Yield and Display Table"):
 
         # Sample data (replace these with your actual variables from your data)
         time = die_defect_density_df["Time"]  # Example time variable
-        die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
+        die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values[::-1]  # Example Die Aggregate DD values
         yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
 
         # Create a single figure with two plots
