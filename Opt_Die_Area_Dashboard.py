@@ -56,7 +56,7 @@ with col2:
     st.pyplot(fig)
 
 # Table placeholder
-st.subheader("DIE CONSTRUCTION/COMPOSITION")
+st.subheader("Die Construction / Composition Table")
 
 # Create a DataFrame with the specified column names and empty cells
 columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
@@ -118,11 +118,11 @@ if uploaded_file is not None:
                     edited_df,
                     disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
                     use_container_width=False,
-                    height=400  # Adjust height to make space for the pie chart
+                    height=300  # Adjust height to make space for the pie chart
                 )
 
             with pie_col:
-                # st.subheader("Area % Distribution")
+                st.subheader("Area % Distribution")
 
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
@@ -135,7 +135,7 @@ if uploaded_file is not None:
                     values="Area %",
                     color="Category",
                     hover_data=["Category"],
-                    title="Area % Distribution",
+                    # title="Area % Distribution",
                     hole=0.4,  # Creates a donut chart
                 )
 
