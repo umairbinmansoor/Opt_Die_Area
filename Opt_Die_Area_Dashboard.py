@@ -272,9 +272,20 @@ if st.button("Calculate Yield and Display Table"):
         technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
      
         # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
-        die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
-        if die_construction_df['Area %'].isnull().any():
-            st.error("Area % contains invalid or missing values.")
+        # Safely remove '%' and convert 'Area %' to floats
+        if 'Area %' in die_construction_df.columns:
+            die_construction_df['Area %'] = (
+                die_construction_df['Area %']
+                .astype(str)  # Convert to string to allow `.str` operations
+                .str.rstrip('%')  # Remove '%' if present
+                .replace('', '0')  # Replace empty strings with '0'
+                .astype(float) / 100  # Convert to float and normalize to a fraction
+            )
+        else:
+            st.error("'Area %' column is missing in the uploaded data.")
+        # die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
+        # if die_construction_df['Area %'].isnull().any():
+        #     st.error("Area % contains invalid or missing values.")
             #raise ValueError("Area % contains invalid or missing values.")
         
         die_defect_density_df["Time"] = technology_defect_density_df["Time"]
