@@ -113,7 +113,7 @@ if uploaded_file is not None:
             table_col, pie_col = st.columns([1, 1])  # Two columns for alignment
             
             with table_col:
-                st.subheader("DIE CONSTRUCTION/COMPOSITION")
+                st.subheader("Die Construction / Composition Table")
                 st.data_editor(
                     edited_df,
                     disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
