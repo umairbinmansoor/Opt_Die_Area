@@ -401,6 +401,7 @@ if st.button("Calculate Yield and Display Table"):
 
         # Sample data (replace these with your actual variables from your data)
         time = die_defect_density_df["Time"]  # Example time variable
+        time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
         die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values[::-1]  # Example Die Aggregate DD values
         yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
 
@@ -410,7 +411,7 @@ if st.button("Calculate Yield and Display Table"):
         # Plot Die Aggregate DD on the left y-axis
         ax1.set_xlabel("Time")
         ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
-        ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
+        ax1.plot(time_dad, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
         ax1.tick_params(axis="y", labelcolor="tab:blue")
 
         # Rotate the time axis ticks
