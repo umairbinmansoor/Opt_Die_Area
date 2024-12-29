@@ -405,7 +405,7 @@ if st.button("Calculate Yield and Display Table"):
         # time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
         die_aggregate_dd = pd.to_numeric(die_defect_density_df["Die Aggregate DD"].values)  # Example Die Aggregate DD values
         # yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
-        yield_values = [float(y.strip('%')) for y in die_defect_density_df["Yield"].values]  # Remove % and convert to float
+        yield_data = [float(y.strip('%')) for y in die_defect_density_df["Yield"].values]  # Remove % and convert to float
 
         # Create subplots for two adjacent plots
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=False)
