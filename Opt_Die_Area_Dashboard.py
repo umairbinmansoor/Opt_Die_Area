@@ -400,39 +400,42 @@ if st.button("Calculate Yield and Display Table"):
         )
 
         # Sample data (replace these with your actual variables from your data)
-        time = die_defect_density_df["Time"]  # Example time variable
-        time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
+        time = pd.to_datetime(die_defect_density_df["Time"])  # Example time variable
+        # time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
         die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
         yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
 
-        # Create a single figure with two plots
-        fig, ax1 = plt.subplots(figsize=(10, 6))
+        # Create subplots for two adjacent plots
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=False)
 
-        # Plot Die Aggregate DD on the left y-axis
+        # Plot Die Aggregate DD vs. Time
+        ax1.set_title("Die Aggregate DD vs Time")
         ax1.set_xlabel("Time")
         ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
-        ax1.plot(time_dad, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
+        ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
         ax1.tick_params(axis="y", labelcolor="tab:blue")
+        ax1.set_xticks(time)  # Standardize x-axis ticks
+        ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+        ax1.grid(visible=True, linestyle="--", alpha=0.5)
 
-        # Rotate the time axis ticks
-        ax1.set_xticks(time)  # Align the ticks with the time variable
-        ax1.set_xticklabels(time, rotation=90)  # Rotate the tick labels vertically
-
-        # Create a twin y-axis for Yield on the same figure
-        ax2 = ax1.twinx()
+        # Plot Yield vs. Time
+        ax2.set_title("Yield vs Time")
+        ax2.set_xlabel("Time")
         ax2.set_ylabel("Yield (%)", color="tab:green")
         ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
         ax2.tick_params(axis="y", labelcolor="tab:green")
+        ax2.set_xticks(time)  # Standardize x-axis ticks
+        ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+        ax2.grid(visible=True, linestyle="--", alpha=0.5)
 
-        # Add legends and title
-        fig.suptitle("Die Aggregate DD and Yield vs Time", fontsize=14)
+        # Add legends
         ax1.legend(loc="upper left")
-        ax2.legend(loc="upper right")
+        ax2.legend(loc="upper left")
 
-        # Show grid
-        ax1.grid(visible=True, linestyle="--", alpha=0.5)
+        # Adjust layout for better spacing
+        plt.tight_layout()
 
-        # Display the plot in Streamlit after the Yield Table
+        # Display the plots in Streamlit
         st.pyplot(fig)
     else:
         st.warning("No data available to display in the Die Defect Density Table.")
