@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 from scipy.optimize import curve_fit
+import matplotlib.dates as mdates
 from die_helper import *
 from io import StringIO
 import re
@@ -414,9 +415,12 @@ if st.button("Calculate Yield and Display Table"):
         ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
         ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
         ax1.tick_params(axis="y", labelcolor="tab:blue")
-        ax1.set_xticks(time)  # Standardize x-axis ticks
-        ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+        ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+        ax1.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
         ax1.grid(visible=True, linestyle="--", alpha=0.5)
+
+        # Automatically scale y-axis and make it consistent across the plots
+        ax1.set_ylim(min(die_aggregate_dd) * 0.9, max(die_aggregate_dd) * 1.1)  # Scale for 10% padding
 
         # Plot Yield vs. Time
         ax2.set_title("Yield vs Time")
@@ -424,9 +428,13 @@ if st.button("Calculate Yield and Display Table"):
         ax2.set_ylabel("Yield (%)", color="tab:green")
         ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
         ax2.tick_params(axis="y", labelcolor="tab:green")
-        ax2.set_xticks(time)  # Standardize x-axis ticks
-        ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+        ax2.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+        ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
         ax2.grid(visible=True, linestyle="--", alpha=0.5)
+
+        # Automatically scale y-axis and make it consistent across the plots
+        yield_values = [float(y.strip('%')) for y in yield_data]  # Remove % and convert to float
+        ax2.set_ylim(min(yield_values) * 0.9, max(yield_values) * 1.1)  # Scale for 10% padding
 
         # Add legends
         ax1.legend(loc="upper left")
