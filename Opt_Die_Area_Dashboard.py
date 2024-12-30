@@ -276,12 +276,14 @@ if st.button("Calculate Yield and Display Table"):
         # Safely remove '%' and convert 'Area %' to floats
         if 'Area %' in die_construction_df.columns:
             die_construction_df['Area %'] = (
-                die_construction_df['Area %']
-                .astype(str)  # Convert to string to allow `.str` operations
-                .str.rstrip('%')  # Remove '%' if present
-                .replace('', '0')  # Replace empty strings with '0'
-                .astype(float) / 100  # Convert to float and normalize to a fraction
-            )
+            die_construction_df['Area %']
+            .astype(str)  # Ensure all values are strings
+            .str.strip()  # Remove extra spaces
+            .replace(['None', ''], '0')  # Replace 'None' and empty strings with '0'
+            .str.rstrip('%')  # Remove '%' if present
+            .astype(float)  # Convert to float
+            / 100  # Normalize to a fraction
+        )
         else:
             st.error("'Area %' column is missing in the uploaded data.")
         # die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
