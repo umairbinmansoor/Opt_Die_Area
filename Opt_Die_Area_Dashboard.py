@@ -60,13 +60,13 @@ with col2:
 st.subheader("Die Construction / Composition Table")
 
 # Create a DataFrame with the specified column names and empty cells
-columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+columns = ["Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
 placeholder_df = pd.DataFrame(dc_data, columns=columns)
 
 # Display the interactive table
 edited_df = st.data_editor(
     placeholder_df,
-    disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+    disabled=("Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
     use_container_width=False
 )
 
@@ -117,7 +117,7 @@ if uploaded_file is not None:
                 st.subheader("Die Construction / Composition Table")
                 st.data_editor(
                     edited_df,
-                    disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+                    disabled=("Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
                     use_container_width=False,
                     height=300  # Adjust height to make space for the pie chart
                 )
@@ -314,43 +314,20 @@ if st.button("Calculate Yield and Display Table"):
         area_dict = {}
         
         # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
-        # for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
-        #     if pd.notna(label) and pd.notna(area):
-        #         if label not in area_dict:
-        #             area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
-        #         else:
-        #             found = False
-        #             for entry in area_dict[label]:
-        #                 if entry['Utilization'] == utilization:
-        #                     entry['Area'] += area
-        #                     found = True
-        #                     break
-        #             if not found:
-        #                 area_dict[label].append({'Area': area, 'Utilization': utilization})
-        # Loop through Area %, Utilization/Efficiency [%], and Category/Subcategory columns
-        for category, subcategory, area, utilization in zip(
-                die_construction_df['Category'],
-                die_construction_df['Subcategory'],
-                die_construction_df['Area %'],
-                die_construction_df['Utilization/Efficiency[%]']):
-            
-            # Ensure that area values are not NaN
-            if pd.notna(area):
-                key = f"{category} - {subcategory}"  # Use Category-Subcategory as the key
-
-                # Create an entry for the key if it doesn't exist
-                if key not in area_dict:
-                    area_dict[key] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
+        for label, area, utilization in zip(die_construction_df['Category'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
+            if pd.notna(label) and pd.notna(area):
+                if label not in area_dict:
+                    area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
                 else:
-                    # Append or aggregate area data if the key exists
                     found = False
-                    for entry in area_dict[key]:
+                    for entry in area_dict[label]:
                         if entry['Utilization'] == utilization:
                             entry['Area'] += area
                             found = True
                             break
                     if not found:
-                        area_dict[key].append({'Area': area, 'Utilization': utilization})
+                        area_dict[label].append({'Area': area, 'Utilization': utilization})
+
         # Ensure the column is of type float64
         die_defect_density_df['Die Aggregate DD'] = 0.0
 
