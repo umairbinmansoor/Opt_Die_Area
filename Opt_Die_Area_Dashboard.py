@@ -314,20 +314,43 @@ if st.button("Calculate Yield and Display Table"):
         area_dict = {}
         
         # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
-        for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
-            if pd.notna(label) and pd.notna(area):
-                if label not in area_dict:
-                    area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
+        # for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
+        #     if pd.notna(label) and pd.notna(area):
+        #         if label not in area_dict:
+        #             area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
+        #         else:
+        #             found = False
+        #             for entry in area_dict[label]:
+        #                 if entry['Utilization'] == utilization:
+        #                     entry['Area'] += area
+        #                     found = True
+        #                     break
+        #             if not found:
+        #                 area_dict[label].append({'Area': area, 'Utilization': utilization})
+        # Loop through Area %, Utilization/Efficiency [%], and Category/Subcategory columns
+        for category, subcategory, area, utilization in zip(
+                die_construction_df['Category'],
+                die_construction_df['Subcategory'],
+                die_construction_df['Area %'],
+                die_construction_df['Utilization/Efficiency[%]']):
+            
+            # Ensure that area values are not NaN
+            if pd.notna(area):
+                key = f"{category} - {subcategory}"  # Use Category-Subcategory as the key
+
+                # Create an entry for the key if it doesn't exist
+                if key not in area_dict:
+                    area_dict[key] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
                 else:
+                    # Append or aggregate area data if the key exists
                     found = False
-                    for entry in area_dict[label]:
+                    for entry in area_dict[key]:
                         if entry['Utilization'] == utilization:
                             entry['Area'] += area
                             found = True
                             break
                     if not found:
-                        area_dict[label].append({'Area': area, 'Utilization': utilization})
-
+                        area_dict[key].append({'Area': area, 'Utilization': utilization})
         # Ensure the column is of type float64
         die_defect_density_df['Die Aggregate DD'] = 0.0
 
@@ -363,11 +386,7 @@ if st.button("Calculate Yield and Display Table"):
         die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float).astype(str)# + " (def/cm²)"
         die_defect_density_df['MFU'] = round(mfu(die_width, die_height)["MFU%"], 2)
         die_defect_density_df['MFU'] = die_defect_density_df['MFU'].apply(lambda x: f"{round(x, 2)}%")
-        # Save the updated DataFrame back to a new CSV file
-        # output_file = "die_defect_density_updated.csv"
-        # die_defect_density_df.to_csv(output_file, index=False, encoding='utf-8')
-        # print(f"\nAggregated Die Defect Density, Yield, GDPW, and MFU columns added and saved to {output_file}")
-            
+        
     
     # Display the Die Defect Density Table
     st.subheader("YIELD TABLE")
