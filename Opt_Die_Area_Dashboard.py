@@ -412,7 +412,7 @@ if st.button("Calculate Yield and Display Table"):
         yield_data = [float(y.strip('%')) for y in die_defect_density_df["Yield"].values]
 
         # Safeguard for NaN values
-        if die_aggregate_dd.isnull().any():
+        if pd.Series(die_aggregate_dd).isnull().any():
             st.error("Die Aggregate DD contains invalid values. Please check your data.")
         elif any(pd.isnull(yield_data)):
             st.error("Yield contains invalid values. Please check your data.")
