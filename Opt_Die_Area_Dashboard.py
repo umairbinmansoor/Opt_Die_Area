@@ -447,7 +447,9 @@ if st.button("Calculate Yield and Display Table"):
             ax2.grid(visible=True, linestyle="--", alpha=0.5)
 
             # Automatically scale y-axis and make it consistent across the plots
-            yield_values = [float(y.strip('%')) for y in yield_data]  # Remove % and convert to float
+            # yield_values = [float(y.strip('%')) for y in yield_data]  # Remove % and convert to float
+            yield_values = [float(y.strip('%')) if isinstance(y, str) else float(y) for y in yield_data]
+
             ax2.set_ylim(min(yield_values) * 0.9, max(yield_values) * 1.1)  # Scale for 10% padding
 
             # Add legends
