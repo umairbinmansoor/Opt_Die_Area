@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 from scipy.optimize import curve_fit
-
+import matplotlib.dates as mdates
 from die_helper import *
 from io import StringIO
 import re
@@ -415,8 +415,9 @@ if st.button("Calculate Yield and Display Table"):
         ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
         ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
         ax1.tick_params(axis="y", labelcolor="tab:blue")
+        ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
         ax1.set_xticks(time)  # Standardize x-axis ticks
-        ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+        # ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
         ax1.grid(visible=True, linestyle="--", alpha=0.5)
 
         # Plot Yield vs. Time
@@ -425,8 +426,10 @@ if st.button("Calculate Yield and Display Table"):
         ax2.set_ylabel("Yield (%)", color="tab:green")
         ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
         ax2.tick_params(axis="y", labelcolor="tab:green")
-        ax2.set_xticks(time)  # Standardize x-axis ticks
-        ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+        ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+        ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
+        # ax2.set_xticks(time)  # Standardize x-axis ticks
+        # ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
         ax2.grid(visible=True, linestyle="--", alpha=0.5)
 
         # Add legends
