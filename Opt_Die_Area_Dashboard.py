@@ -403,43 +403,61 @@ if st.button("Calculate Yield and Display Table"):
         # Sample data (replace these with your actual variables from your data)
         time = pd.to_datetime(die_defect_density_df["Time"])  # Example time variable
         # time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
-        die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
-        yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
+        # die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
+        # yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
+        # Ensure Die Aggregate DD values are numeric
+        die_aggregate_dd = pd.to_numeric(die_defect_density_df["Die Aggregate DD"].values[::-1], errors="coerce")
 
-        # Create subplots for two adjacent plots
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=False)
+        # Ensure Yield values are numeric, stripping '%' if necessary
+        yield_data = [float(y.strip('%')) for y in die_defect_density_df["Yield"].values]
 
-        # Plot Die Aggregate DD vs. Time
-        ax1.set_title("Die Aggregate DD vs Time")
-        ax1.set_xlabel("Time")
-        ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
-        ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
-        ax1.tick_params(axis="y", labelcolor="tab:blue")
-        ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
-        ax1.set_xticks(time)  # Standardize x-axis ticks
-        # ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
-        ax1.grid(visible=True, linestyle="--", alpha=0.5)
+        # Safeguard for NaN values
+        if die_aggregate_dd.isnull().any():
+            st.error("Die Aggregate DD contains invalid values. Please check your data.")
+        elif any(pd.isnull(yield_data)):
+            st.error("Yield contains invalid values. Please check your data.")
+        else:
+            # Create subplots for two adjacent plots
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=False)
 
-        # Plot Yield vs. Time
-        ax2.set_title("Yield vs Time")
-        ax2.set_xlabel("Time")
-        ax2.set_ylabel("Yield (%)", color="tab:green")
-        ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
-        ax2.tick_params(axis="y", labelcolor="tab:green")
-        ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
-        ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
-        # ax2.set_xticks(time)  # Standardize x-axis ticks
-        # ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
-        ax2.grid(visible=True, linestyle="--", alpha=0.5)
+            # Plot Die Aggregate DD vs. Time
+            ax1.set_title("Die Aggregate DD vs Time")
+            ax1.set_xlabel("Time")
+            ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
+            ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
+            ax1.tick_params(axis="y", labelcolor="tab:blue")
+            ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+            ax1.set_xticks(time)  # Standardize x-axis ticks
+            # ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+            ax1.grid(visible=True, linestyle="--", alpha=0.5)
 
-        # Add legends
-        ax1.legend(loc="upper left")
-        ax2.legend(loc="upper left")
+            # Automatically scale y-axis and make it consistent across the plots
+            ax1.set_ylim(min(die_aggregate_dd) * 0.9, max(die_aggregate_dd) * 1.1)  # Scale for 10% padding
 
-        # Adjust layout for better spacing
-        plt.tight_layout()
+            # Plot Yield vs. Time
+            ax2.set_title("Yield vs Time")
+            ax2.set_xlabel("Time")
+            ax2.set_ylabel("Yield (%)", color="tab:green")
+            ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
+            ax2.tick_params(axis="y", labelcolor="tab:green")
+            ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+            ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
+            # ax2.set_xticks(time)  # Standardize x-axis ticks
+            # ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+            ax2.grid(visible=True, linestyle="--", alpha=0.5)
 
-        # Display the plots in Streamlit
-        st.pyplot(fig)
+            # Automatically scale y-axis and make it consistent across the plots
+            yield_values = [float(y.strip('%')) for y in yield_data]  # Remove % and convert to float
+            ax2.set_ylim(min(yield_values) * 0.9, max(yield_values) * 1.1)  # Scale for 10% padding
+
+            # Add legends
+            ax1.legend(loc="upper left")
+            ax2.legend(loc="upper left")
+
+            # Adjust layout for better spacing
+            plt.tight_layout()
+
+            # Display the plots in Streamlit
+            st.pyplot(fig)
     else:
         st.warning("No data available to display in the Die Defect Density Table.")
