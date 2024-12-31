@@ -9,16 +9,16 @@ RETICLE_A = RETICLE_X * RETICLE_Y  # Precomputed area of the reticle
 DIAMETER_OF_WAFER = 300  # mm
 
 dc_data = [
-    ["Logic", "short Ht", None, None, None, None],
-    ["Logic", "Med Ht", None, None, None, None],
-    ["Logic", "Recovery", None, None, None, None],
-    ["Memory", "HDC", None, None, None, None],
-    ["Memory", "HCC", None, None, None, None],
-    ["Memory", "RF", None, None, None, None],
-    ["Memory", "Recovery", None, None, None, None],
-    ["Mesh", "", None, None, None, None],
-    ["White Space", "", None, None, None, None],
-    ["Analog", "", None, None, None, None]
+    ["Logic", "short Ht", "SDD", None, None, None, None],
+    ["Logic", "Med Ht", "MDD", None, None, None, None],
+    ["Logic", "Recovery", "", None, None, None, None],
+    ["Memory", "HDC", "HDCDD", None, None, None, None],
+    ["Memory", "HCC", "HCDD", None, None, None, None],
+    ["Memory", "RF", "RFDD", None, None, None, None],
+    ["Memory", "Recovery", "", None, None, None, None],
+    ["Mesh", "", "MDD", None, None, None, None],
+    ["White Space", "", "MDD", None, None, None, None],
+    ["Analog", "", "ADD", None, None, None, None]
 ]
 
 # Multi-line string representation of the technology defect density table

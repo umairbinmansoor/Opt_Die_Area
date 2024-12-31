@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 from scipy.optimize import curve_fit
-import matplotlib.dates as mdates
+
 from die_helper import *
 from io import StringIO
 import re
@@ -60,13 +60,13 @@ with col2:
 st.subheader("Die Construction / Composition Table")
 
 # Create a DataFrame with the specified column names and empty cells
-columns = ["Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
 placeholder_df = pd.DataFrame(dc_data, columns=columns)
 
 # Display the interactive table
 edited_df = st.data_editor(
     placeholder_df,
-    disabled=("Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+    disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
     use_container_width=False
 )
 
@@ -117,7 +117,7 @@ if uploaded_file is not None:
                 st.subheader("Die Construction / Composition Table")
                 st.data_editor(
                     edited_df,
-                    disabled=("Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+                    disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
                     use_container_width=False,
                     height=300  # Adjust height to make space for the pie chart
                 )
@@ -276,14 +276,12 @@ if st.button("Calculate Yield and Display Table"):
         # Safely remove '%' and convert 'Area %' to floats
         if 'Area %' in die_construction_df.columns:
             die_construction_df['Area %'] = (
-            die_construction_df['Area %']
-            .astype(str)  # Ensure all values are strings
-            .str.strip()  # Remove extra spaces
-            .replace(['None', ''], '0')  # Replace 'None' and empty strings with '0'
-            .str.rstrip('%')  # Remove '%' if present
-            .astype(float)  # Convert to float
-            / 100  # Normalize to a fraction
-        )
+                die_construction_df['Area %']
+                .astype(str)  # Convert to string to allow `.str` operations
+                .str.rstrip('%')  # Remove '%' if present
+                .replace('', '0')  # Replace empty strings with '0'
+                .astype(float) / 100  # Convert to float and normalize to a fraction
+            )
         else:
             st.error("'Area %' column is missing in the uploaded data.")
         # die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
@@ -316,7 +314,7 @@ if st.button("Calculate Yield and Display Table"):
         area_dict = {}
         
         # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
-        for label, area, utilization in zip(die_construction_df['Category'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
+        for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
             if pd.notna(label) and pd.notna(area):
                 if label not in area_dict:
                     area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
@@ -365,7 +363,11 @@ if st.button("Calculate Yield and Display Table"):
         die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float).astype(str)# + " (def/cm²)"
         die_defect_density_df['MFU'] = round(mfu(die_width, die_height)["MFU%"], 2)
         die_defect_density_df['MFU'] = die_defect_density_df['MFU'].apply(lambda x: f"{round(x, 2)}%")
-        
+        # Save the updated DataFrame back to a new CSV file
+        # output_file = "die_defect_density_updated.csv"
+        # die_defect_density_df.to_csv(output_file, index=False, encoding='utf-8')
+        # print(f"\nAggregated Die Defect Density, Yield, GDPW, and MFU columns added and saved to {output_file}")
+            
     
     # Display the Die Defect Density Table
     st.subheader("YIELD TABLE")
@@ -401,9 +403,8 @@ if st.button("Calculate Yield and Display Table"):
         # Sample data (replace these with your actual variables from your data)
         time = pd.to_datetime(die_defect_density_df["Time"])  # Example time variable
         # time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
-        die_aggregate_dd = pd.to_numeric(die_defect_density_df["Die Aggregate DD"].values)  # Example Die Aggregate DD values
-        # yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
-        yield_data = [float(y.strip('%')) for y in die_defect_density_df["Yield"].values]  # Remove % and convert to float
+        die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
+        yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
 
         # Create subplots for two adjacent plots
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=False)
@@ -414,12 +415,9 @@ if st.button("Calculate Yield and Display Table"):
         ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
         ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
         ax1.tick_params(axis="y", labelcolor="tab:blue")
-        ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
-        ax1.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
+        ax1.set_xticks(time)  # Standardize x-axis ticks
+        ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
         ax1.grid(visible=True, linestyle="--", alpha=0.5)
-
-        # Automatically scale y-axis and make it consistent across the plots
-        ax1.set_ylim(min(die_aggregate_dd) * 0.9, max(die_aggregate_dd) * 1.1)  # Scale for 10% padding
 
         # Plot Yield vs. Time
         ax2.set_title("Yield vs Time")
@@ -427,13 +425,9 @@ if st.button("Calculate Yield and Display Table"):
         ax2.set_ylabel("Yield (%)", color="tab:green")
         ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
         ax2.tick_params(axis="y", labelcolor="tab:green")
-        ax2.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
-        ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
+        ax2.set_xticks(time)  # Standardize x-axis ticks
+        ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
         ax2.grid(visible=True, linestyle="--", alpha=0.5)
-
-        # Automatically scale y-axis and make it consistent across the plots
-        # yield_values = [float(y.strip('%')) for y in yield_data]  # Remove % and convert to float
-        ax2.set_ylim(min(yield_data) * 0.9, max(yield_data) * 1.1)  # Scale for 10% padding
 
         # Add legends
         ax1.legend(loc="upper left")
