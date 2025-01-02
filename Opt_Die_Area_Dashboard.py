@@ -132,7 +132,7 @@ if uploaded_file is not None:
 
                 # Create the pie chart
                 # fig = px.sunburst(edited_df, path=['Category', 'Subcategory'], values='Area %')
-                fig = px.pie(edited_df, names=['Category', 'Subcategory'], values='Area %', hole=0.3)
+                fig = px.pie(edited_df, names='Category', values='Area %', hole=0.3)
 
                 # Customize the chart (optional)
                 fig.update_traces(textinfo='label+value', textfont_size=12)
