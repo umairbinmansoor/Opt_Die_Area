@@ -127,33 +127,18 @@ if uploaded_file is not None:
             with pie_col:
                 st.subheader("Area % Distribution")
 
-                # Ensure 'Area %' column is numeric
-                edited_df["Area %"] = (
-                    edited_df["Area %"]
-                    .astype(str)  # Convert to string to allow .str operations
-                    .str.rstrip('%')  # Remove % if present
-                    .replace('', '0')  # Replace empty strings with 0
-                    .astype(float, errors='ignore')  # Convert to float
-                )
-
-                # Group data by Category and Subcategory
-                grouped_df = edited_df.groupby(["Category", "Subcategory"])["Area %"].sum().reset_index()
-
-                # Create a summary DataFrame with aggregated Area % and combined Subcategories
-                summary_df = (
-                    grouped_df.groupby("Category")
-                    .agg({"Area %": "sum", "Subcategory": lambda x: ", ".join(filter(pd.notna, x))})
-                    .reset_index()
-                )
-                summary_df.rename(columns={"Subcategory": "Subcategories"}, inplace=True)
+                # Ensure Area % column is numeric
+                edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
+                pie_area_df = edited_df.groupby("Category")["Area %"].sum().reset_index()
 
                 # Generate the interactive pie chart
                 pie_chart = px.pie(
-                    summary_df,
+                    pie_area_df,
                     names="Category",
                     values="Area %",
                     color="Category",
-                    hover_data=["Subcategories"],  # Add Subcategories to hover data
+                    hover_data=["Category"],
+                    # title="Area % Distribution",
                     hole=0.4,  # Creates a donut chart
                 )
 
