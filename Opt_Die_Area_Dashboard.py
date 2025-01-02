@@ -131,8 +131,8 @@ if uploaded_file is not None:
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
 
                 # Create the pie chart
-                # fig = px.sunburst(edited_df, path=['Category', 'Subcategory'], values='Area %')
-                fig = px.pie(edited_df, names='Category', values='Area %', hole=0.3)
+                fig = px.sunburst(edited_df, path=['Category', 'Subcategory'], values='Area %')
+                # fig = px.pie(edited_df, names='Category', values='Area %', hole=0.3)
 
                 # Customize the chart (optional)
                 fig.update_traces(textinfo='label+value', textfont_size=12)
