@@ -61,17 +61,18 @@ st.subheader("Die Construction / Composition Table")
 
 # Create a DataFrame with the specified column names and empty cells
 columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
-placeholder_df = pd.DataFrame(dc_data, columns=columns)
+columns1 = ["Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+placeholder_df = pd.DataFrame(dc_data1, columns=columns1)
 
 # Display the interactive table
 edited_df = st.data_editor(
     placeholder_df,
-    disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+    disabled=("Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
     use_container_width=False
 )
 
 # Create a DataFrame from dc_data and columns
-template_df = pd.DataFrame(dc_data, columns=columns)
+template_df = pd.DataFrame(dc_data1, columns=columns1)
 
 # Convert the DataFrame to CSV
 csv_template = template_df.to_csv(index=False).encode('utf-8')
@@ -102,6 +103,7 @@ if uploaded_file is not None:
     try:
         # Read the uploaded file into a DataFrame
         uploaded_df = pd.read_csv(uploaded_file)
+        uploaded_df["Defectivity Labels"] = ["SDD", "MDD", "", "HDCDD", "HCDD", "RFDD", "", "MDD", "MDD", "ADD"]
 
         # Validate the uploaded DataFrame
         if set(columns) == set(uploaded_df.columns):
@@ -116,8 +118,8 @@ if uploaded_file is not None:
             with table_col:
                 st.subheader("Die Construction / Composition Table")
                 st.data_editor(
-                    edited_df,
-                    disabled=("Category", "Subcategory", "Defectivity Labels", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+                    uploaded_df.drop("Defectivity Labels", axis='columns'),
+                    disabled=("Category", "Subcategory", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
                     use_container_width=False,
                     height=300  # Adjust height to make space for the pie chart
                 )

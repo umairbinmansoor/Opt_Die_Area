@@ -21,6 +21,19 @@ dc_data = [
     ["Analog", "", "ADD", None, None, None, None]
 ]
 
+dc_data1 = [
+    ["Logic", "short Ht", None, None, None, None],
+    ["Logic", "Med Ht", None, None, None, None],
+    ["Logic", "Recovery", None, None, None, None],
+    ["Memory", "HDC", None, None, None, None],
+    ["Memory", "HCC", None, None, None, None],
+    ["Memory", "RF", None, None, None, None],
+    ["Memory", "Recovery", None, None, None, None],
+    ["Mesh", "", None, None, None, None],
+    ["White Space", "", None, None, None, None],
+    ["Analog", "", None, None, None, None]
+]
+
 # Multi-line string representation of the technology defect density table
 tdd_data = """
 Time	Short Ht DD [SDD] at 45%	Mid Ht DD [MDD] at 50%	HDC DD [HDDD]	HCD DD w/R [HDDDR]	HCC DD [HCDD]	HCC DD w/R [HCDDR]	RF DD [RFDD]	RF DD w/R [RFDDR]	Analog DD [ADD]	Used For Calc [junk]
