@@ -129,7 +129,18 @@ if uploaded_file is not None:
 
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
-                pie_area_df = edited_df.groupby("Category")["Area %"].sum().reset_index()
+                # pie_area_df = edited_df.groupby("Category")["Area %"].sum().reset_index()
+                pie_area_df = edited_df.groupby(["Category", "Subcategory"])["Area %"].sum().reset_index()
+
+
+                # Create the pie chart
+                fig = px.sunburst(pie_area_df, path=['Category', 'Subcategory'], values='Area %',
+                                title='Category and Subcategory Area Percentage')
+
+                # Customize the chart (optional)
+                fig.update_traces(textinfo='label+value', textfont_size=12)
+                fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
+
 
                 # Generate the interactive pie chart
                 pie_chart = px.pie(
@@ -143,7 +154,14 @@ if uploaded_file is not None:
                 )
 
                 # Display the pie chart in Streamlit
-                st.plotly_chart(pie_chart, use_container_width=True)
+                # st.plotly_chart(pie_chart, use_container_width=True)
+
+                # Display the chart
+                st.plotly_chart(fig)
+
+                # Example of a slider
+                foo = st.slider("Select a value", 1, 10, 1)  # This creates the slider in Streamlit
+                st.write(f"Selected Value: {foo}")  # This displays the selected value
                 
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
