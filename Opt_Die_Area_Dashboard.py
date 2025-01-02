@@ -130,11 +130,11 @@ if uploaded_file is not None:
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
                 # pie_area_df = edited_df.groupby("Category")["Area %"].sum().reset_index()
-                pie_area_df = edited_df.groupby(["Category", "Subcategory"])["Area %"].sum().reset_index()
+                # pie_area_df = edited_df.groupby(["Category", "Subcategory"])["Area %"].sum().reset_index()
 
 
                 # Create the pie chart
-                fig = px.sunburst(pie_area_df, path=['Category', 'Subcategory'], values='Area %')
+                fig = px.sunburst(edited_df, path=['Category', 'Subcategory'], values='Area %')
 
                 # Customize the chart (optional)
                 fig.update_traces(textinfo='label+value', textfont_size=12)
@@ -142,15 +142,15 @@ if uploaded_file is not None:
 
 
                 # Generate the interactive pie chart
-                pie_chart = px.pie(
-                    pie_area_df,
-                    names="Category",
-                    values="Area %",
-                    color="Category",
-                    hover_data=["Category"],
-                    # title="Area % Distribution",
-                    hole=0.4,  # Creates a donut chart
-                )
+                # pie_chart = px.pie(
+                #     pie_area_df,
+                #     names="Category",
+                #     values="Area %",
+                #     color="Category",
+                #     hover_data=["Category"],
+                #     # title="Area % Distribution",
+                #     hole=0.4,  # Creates a donut chart
+                # )
 
                 # Display the pie chart in Streamlit
                 # st.plotly_chart(pie_chart, use_container_width=True)
