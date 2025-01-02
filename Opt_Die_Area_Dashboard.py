@@ -134,8 +134,7 @@ if uploaded_file is not None:
 
 
                 # Create the pie chart
-                fig = px.sunburst(pie_area_df, path=['Category', 'Subcategory'], values='Area %',
-                                title='Category and Subcategory Area Percentage')
+                fig = px.sunburst(pie_area_df, path=['Category', 'Subcategory'], values='Area %')
 
                 # Customize the chart (optional)
                 fig.update_traces(textinfo='label+value', textfont_size=12)
@@ -158,10 +157,6 @@ if uploaded_file is not None:
 
                 # Display the chart
                 st.plotly_chart(fig)
-
-                # Example of a slider
-                foo = st.slider("Select a value", 1, 10, 1)  # This creates the slider in Streamlit
-                st.write(f"Selected Value: {foo}")  # This displays the selected value
                 
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
