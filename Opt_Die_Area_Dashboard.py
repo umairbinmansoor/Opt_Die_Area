@@ -440,7 +440,7 @@ if st.button("Calculate Yield and Display Table"):
             ax2.set_ylabel("Yield (%)", color="tab:green")
             ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
             ax2.tick_params(axis="y", labelcolor="tab:green")
-            ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+            ax1.xaxis.set_major_formatter(mdates.DateFormatter("%m %Y"))  # Format x-axis to show Month and Year
             ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
             # ax2.set_xticks(time)  # Standardize x-axis ticks
             # ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
