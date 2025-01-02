@@ -62,7 +62,7 @@ st.subheader("Die Construction / Composition Table")
 # Create a DataFrame with the specified column names and empty cells
 columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
 columns1 = ["Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
-placeholder_df = pd.DataFrame(dc_data, columns=columns1)
+placeholder_df = pd.DataFrame(dc_data1, columns=columns1)
 
 # Display the interactive table
 edited_df = st.data_editor(
