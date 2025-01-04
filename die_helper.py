@@ -22,7 +22,7 @@ dc_data = [
 ]
 
 dc_data1 = [
-    ["Logic", "short Ht", '35.00%',	'70.00%', '90.00%',	'10.00%'],
+    ["Logic", "short Ht", '35.00%', '70.00%', '90.00%', '10.00%'],
     ["Logic", "Med Ht", '25.00%', '65.00%', '100.00%', '0.00%'],
     ["Logic", "Recovery", '0.00%', None, None, None],
     ["Memory", "HDC", '10.00%',	'65.00%', None, None],
