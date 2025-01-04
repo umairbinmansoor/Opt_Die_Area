@@ -29,9 +29,9 @@ dc_data1 = [
     ["Memory", "HCC", '10.00%',	'70.00%', None, None],
     ["Memory", "RF", '2.00%', None, None, None],
     ["Memory", "Recovery", '0.00%', None, None, None],
-    ["Mesh", "", '10.00%', '20.00%', None, None],
-    ["White Space", "", '5.00%', '10.00%', None, None],
-    ["Analog", "", '3.00%', None, None, None]
+    ["Mesh", "-", '10.00%', '20.00%', None, None],
+    ["White Space", "-", '5.00%', '10.00%', None, None],
+    ["Analog", "-", '3.00%', None, None, None]
 ]
 
 # Multi-line string representation of the technology defect density table
