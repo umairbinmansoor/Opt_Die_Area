@@ -22,16 +22,16 @@ dc_data = [
 ]
 
 dc_data1 = [
-    ["Logic", "short Ht", None, None, None, None],
-    ["Logic", "Med Ht", None, None, None, None],
-    ["Logic", "Recovery", None, None, None, None],
-    ["Memory", "HDC", None, None, None, None],
-    ["Memory", "HCC", None, None, None, None],
-    ["Memory", "RF", None, None, None, None],
-    ["Memory", "Recovery", None, None, None, None],
-    ["Mesh", "", None, None, None, None],
-    ["White Space", "", None, None, None, None],
-    ["Analog", "", None, None, None, None]
+    ["Logic", "short Ht", '35.00%',	'70.00%', '90.00%',	'10.00%'],
+    ["Logic", "Med Ht", '25.00%', '65.00%', '100.00%', '0.00%'],
+    ["Logic", "Recovery", '0.00%', None, None, None],
+    ["Memory", "HDC", '10.00%',	'65.00%', None, None],
+    ["Memory", "HCC", '10.00%',	'70.00%', None, None],
+    ["Memory", "RF", '2.00%', None, None, None],
+    ["Memory", "Recovery", '0.00%', None, None, None],
+    ["Mesh", "", '10.00%', '20.00%', None, None],
+    ["White Space", "", '5.00%', '10.00%', None, None],
+    ["Analog", "", '3.00%', None, None, None]
 ]
 
 # Multi-line string representation of the technology defect density table
