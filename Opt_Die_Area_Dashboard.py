@@ -113,10 +113,6 @@ if uploaded_file is not None:
             # Update the placeholder DataFrame with uploaded data
             edited_df = uploaded_df.copy()
 
-            uploaded_df.loc[uploaded_df['Category'] == 'Mesh', 'Subcategory'] = 'Mesh'
-            uploaded_df.loc[uploaded_df['Category'] == 'White Space', 'Subcategory'] = 'White Space'
-            uploaded_df.loc[uploaded_df['Category'] == 'Analog', 'Subcategory'] = 'Analog'
-
             # Layout for table and pie charts
             table_col, pie_col = st.columns([1, 1])  # Two columns for alignment
             
@@ -132,6 +128,10 @@ if uploaded_file is not None:
             with pie_col:
                 st.subheader("Area % Distribution")
 
+                edited_df.loc[edited_df['Category'] == 'Mesh', 'Subcategory'] = 'Mesh'
+                edited_df.loc[edited_df['Category'] == 'White Space', 'Subcategory'] = 'White Space'
+                edited_df.loc[edited_df['Category'] == 'Analog', 'Subcategory'] = 'Analog'
+
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
 
@@ -145,6 +145,10 @@ if uploaded_file is not None:
 
                 # Display the chart
                 st.plotly_chart(fig)
+
+                edited_df.loc[edited_df['Category'] == 'Mesh', 'Subcategory'] = ''
+                edited_df.loc[edited_df['Category'] == 'White Space', 'Subcategory'] = ''
+                edited_df.loc[edited_df['Category'] == 'Analog', 'Subcategory'] = ''
                 
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
