@@ -132,10 +132,6 @@ if uploaded_file is not None:
                 edited_df.loc[edited_df['Category'] == 'White Space', 'Subcategory'] = 'White Space'
                 edited_df.loc[edited_df['Category'] == 'Analog', 'Subcategory'] = 'Analog'
 
-                edited_df.loc[edited_df['Category'] == 'Mesh', 'Category'] = ''
-                edited_df.loc[edited_df['Category'] == 'White Space', 'Category'] = ''
-                edited_df.loc[edited_df['Category'] == 'Analog', 'Category'] = ''
-                
                 # Ensure Area % column is numeric
                 edited_df["Area %"] = edited_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
 
@@ -153,10 +149,6 @@ if uploaded_file is not None:
                 edited_df.loc[edited_df['Category'] == 'Mesh', 'Subcategory'] = ''
                 edited_df.loc[edited_df['Category'] == 'White Space', 'Subcategory'] = ''
                 edited_df.loc[edited_df['Category'] == 'Analog', 'Subcategory'] = ''
-
-                edited_df.loc[edited_df['Category'] == 'Mesh', 'Category'] = 'Mesh'
-                edited_df.loc[edited_df['Category'] == 'White Space', 'Category'] = 'White Space'
-                edited_df.loc[edited_df['Category'] == 'Analog', 'Category'] = 'Analog'                
                 
         else:
             st.error("Uploaded file does not match the template format. Please use the provided template.")
