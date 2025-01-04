@@ -73,10 +73,10 @@ edited_df = st.data_editor(
 )
 
 # Create a DataFrame from dc_data and columns
-template_df = pd.DataFrame(dc_data1, columns=columns1)
+# template_df = pd.DataFrame(dc_data1, columns=columns1)
 
 # Convert the DataFrame to CSV
-csv_template = template_df.to_csv(index=False).encode('utf-8')
+csv_template = placeholder_df.to_csv(index=False).encode('utf-8')
 
 # Add download and upload buttons side by side
 col1, col2 = st.columns([1, 1])  # Two columns for alignment
