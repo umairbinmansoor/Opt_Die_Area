@@ -113,6 +113,10 @@ if uploaded_file is not None:
             # Update the placeholder DataFrame with uploaded data
             edited_df = uploaded_df.copy()
 
+            uploaded_df.loc[uploaded_df['Category'] == 'Mesh', 'Subcategory'] = 'Mesh'
+            uploaded_df.loc[uploaded_df['Category'] == 'White Space', 'Subcategory'] = 'White Space'
+            uploaded_df.loc[uploaded_df['Category'] == 'Analog', 'Subcategory'] = 'Analog'
+
             # Layout for table and pie charts
             table_col, pie_col = st.columns([1, 1])  # Two columns for alignment
             
