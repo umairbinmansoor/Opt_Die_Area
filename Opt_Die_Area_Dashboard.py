@@ -122,7 +122,7 @@ if uploaded_file is not None:
                     uploaded_df.drop("Defectivity Labels", axis='columns'),
                     disabled=("Category", "Subcategory", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
                     use_container_width=False,
-                    height=300  # Adjust height to make space for the pie chart
+                    height=400  # Adjust height to make space for the pie chart
                 )
 
             with pie_col:
