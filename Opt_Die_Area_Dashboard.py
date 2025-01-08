@@ -80,6 +80,7 @@ csv_template = placeholder_df.to_csv(index=False).encode('utf-8')
 
 # Define a condition to disable the buttons (e.g., set to False to "disable" the buttons)
 enable_buttons = False
+uploaded_file = None
 
 # Add download and upload buttons side by side
 col1, col2 = st.columns([1, 1])  # Two columns for alignment
