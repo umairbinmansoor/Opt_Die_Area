@@ -78,26 +78,34 @@ edited_df = st.data_editor(
 # Convert the DataFrame to CSV
 csv_template = placeholder_df.to_csv(index=False).encode('utf-8')
 
+# Define a condition to disable the buttons (e.g., set to False to "disable" the buttons)
+enable_buttons = False
+
 # Add download and upload buttons side by side
 col1, col2 = st.columns([1, 1])  # Two columns for alignment
 
 with col1:
-    # Download button for template CSV
-    st.download_button(
-        label="Download Template as CSV",
-        data=csv_template,
-        file_name="die_construction_template.csv",
-        mime="text/csv",
-        key="download_template_csv"  # Unique key for the download button
-    )
+    if enable_buttons:  # Only show the download button if enabled
+        st.download_button(
+            label="Download Template as CSV",
+            data=csv_template,
+            file_name="die_construction_template.csv",
+            mime="text/csv",
+            key="download_template_csv"  # Unique key for the download button
+        )
+    else:
+        st.button("Download Disabled", disabled=True)  # Placeholder disabled button
 
 with col2:
-    # File uploader for filled template
-    uploaded_file = st.file_uploader(
-        "Upload Filled Template",
-        type=["csv"],
-        key="upload_template_csv"  # Unique key for the file uploader
-    )
+    if enable_buttons:  # Only show the file uploader if enabled
+        uploaded_file = st.file_uploader(
+            "Upload Filled Template",
+            type=["csv"],
+            key="upload_template_csv"  # Unique key for the file uploader
+        )
+    else:
+        st.button("Upload Disabled", disabled=True)  # Placeholder disabled button
+
 
 # If a file is uploaded, update the placeholder DataFrame and re-render the data editor
 if uploaded_file is not None:
