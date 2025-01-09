@@ -17,19 +17,6 @@ This dashboard allows you to input die dimensions (Xdie and Ydie) and view:
 - A contour plot of MFU with Xdie and Ydie axes.
 """)
 
-# # Custom CSS to adjust input field width
-# st.markdown("""
-#     <style>
-#         div[data-testid="stNumberInput"] > div > div > input {
-#             width: 120px !important;
-#         }
-#         div[data-testid="stSelectbox"] > div > div > select {
-#             width: 120px !important;
-#         }
-#     </style>
-# """, unsafe_allow_html=True)
-
-# Input fields in columns for better layout
 col1, col2 = st.columns([1, 2])  # Two columns layout
 
 with col1:
@@ -43,19 +30,59 @@ with col1:
 
 with col2:
     #st.subheader("Die Representation")
-    fig_width = Xdie / max(Xdie, Ydie) * 4  # Scale width relative to a base size
-    fig_height = Ydie / max(Xdie, Ydie) * 4  # Scale height relative to a base size
+    # fig_width = Xdie / max(Xdie, Ydie) * 4  # Scale width relative to a base size
+    # fig_height = Ydie / max(Xdie, Ydie) * 4  # Scale height relative to a base size
 
-    fig, ax = plt.subplots(figsize=(fig_width, fig_height))  # Set dynamic figure size
-    ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor=None, lw=2))
-    ax.set_xlim(0, Xdie)
-    ax.set_ylim(0, Ydie)
-    ax.set_aspect('equal', adjustable='box')  # Keep the aspect ratio equal
-    #ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=6)
-    ax.tick_params(axis='both', labelsize=8)  # Reduce X-tick and Y-tick font size
-    ax.set_xlabel("Xdie (mm)", fontsize=8)
-    ax.set_ylabel("Ydie (mm)", fontsize=8)
+    # fig, ax = plt.subplots(figsize=(fig_width, fig_height))  # Set dynamic figure size
+    # ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor=None, lw=2))
+    # ax.set_xlim(0, Xdie)
+    # ax.set_ylim(0, Ydie)
+    # ax.set_aspect('equal', adjustable='box')  # Keep the aspect ratio equal
+    # #ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=6)
+    # ax.tick_params(axis='both', labelsize=8)  # Reduce X-tick and Y-tick font size
+    # ax.set_xlabel("Xdie (mm)", fontsize=8)
+    # ax.set_ylabel("Ydie (mm)", fontsize=8)
+    # st.pyplot(fig)
+    
+    # Define die dimensions
+    die_area = Xdie * Ydie
+    
+    if die_area > 0:
+        num_dies = RETICLE_A // die_area  # Integer division to fit dies
+        num_dies_horizontally = RETICLE_X // Xdie
+        num_dies_vertically = RETICLE_Y // Ydie
+    else:
+        num_dies = 0
+        num_dies_horizontally = 0
+        num_dies_vertically = 0
+
+    # Visualization
+    fig, ax = plt.subplots(figsize=(8, 6))
+    # Draw reticle area
+    ax.add_patch(plt.Rectangle((0, 0), RETICLE_X, RETICLE_Y, 
+                                edgecolor="black", facecolor="lightgray", lw=2, label="Reticle Area"))
+
+    # Draw dies within the reticle
+    for i in range(int(num_dies_vertically)):
+        for j in range(int(num_dies_horizontally)):
+            x = j * Xdie
+            y = i * Ydie
+            if x + Xdie <= RETICLE_X and y + Ydie <= RETICLE_Y:  # Ensure dies fit
+                ax.add_patch(plt.Rectangle((x, y), Xdie, Ydie, 
+                                            edgecolor="blue", facecolor="royalblue", lw=1))
+
+    # Formatting
+    ax.set_xlim(0, RETICLE_X)
+    ax.set_ylim(0, RETICLE_Y)
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_title(f"Reticle Area with {num_dies} Dies (Die Area: {die_area:.2f} mm²)", fontsize=10)
+    ax.set_xlabel("Width (mm)")
+    ax.set_ylabel("Height (mm)")
+    ax.legend()
+
+    # Display in Streamlit
     st.pyplot(fig)
+
 
 # Table placeholder
 st.subheader("Die Construction / Composition Table")
