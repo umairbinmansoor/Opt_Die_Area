@@ -78,7 +78,7 @@ with col2:
     ax.set_title(f"Reticle Area with {num_dies} Dies (Die Area: {die_area:.2f} mm²)", fontsize=10)
     ax.set_xlabel("Width (mm)")
     ax.set_ylabel("Height (mm)")
-    ax.legend()
+    # ax.legend()
 
     # Display in Streamlit
     st.pyplot(fig)
