@@ -273,227 +273,229 @@ if not df.empty:
     st.pyplot(fig)
 
 die_defect_density_df = pd.DataFrame()
-# Add a button to trigger YIELD CALCULATION
-if st.button("Calculate Yield and Display Table"):
-    st.write("Button Pressed!")  # Debugging line to confirm button functionality
 
-    # Validate input table data, accommodating for missing values in the selected columns
-    # required_columns = ["Area %", "Utilization/Efficiency[%]", "Must Work"]
+if uploaded_file is not None:
+    # Add a button to trigger YIELD CALCULATION
+    if st.button("Calculate Yield and Display Table"):
+        st.write("Button Pressed!")  # Debugging line to confirm button functionality
 
-    # Example: Define specific cells to validate (row, column)
-    cells_to_check = [(1, "Area %"), (1, "Utilization/Efficiency[%]"), (1, "Must Work"),
-                      (2, "Area %"), (2, "Utilization/Efficiency[%]"), (2, "Must Work"),
-                      (3, "Area %"), (4, "Utilization/Efficiency[%]"), 
-                      (4, "Area %"), (5, "Utilization/Efficiency[%]"), 
-                      (5, "Area %"), (8, "Utilization/Efficiency[%]"), 
-                      (6, "Area %"), (9, "Utilization/Efficiency[%]"), 
-                      (7, "Area %"), 
-                      (8, "Area %"), 
-                      (9, "Area %"), 
-                      (10, "Area %")]
+        # Validate input table data, accommodating for missing values in the selected columns
+        # required_columns = ["Area %", "Utilization/Efficiency[%]", "Must Work"]
 
-    # Check if any of these specific cells are missing (NaN or empty string)
-    missing_values = any(
-        pd.isnull(edited_df.at[row, col]) or edited_df.at[row, col] == ""
-        for row, col in cells_to_check
-        )
+        # Example: Define specific cells to validate (row, column)
+        cells_to_check = [(1, "Area %"), (1, "Utilization/Efficiency[%]"), (1, "Must Work"),
+                        (2, "Area %"), (2, "Utilization/Efficiency[%]"), (2, "Must Work"),
+                        (3, "Area %"), (4, "Utilization/Efficiency[%]"), 
+                        (4, "Area %"), (5, "Utilization/Efficiency[%]"), 
+                        (5, "Area %"), (8, "Utilization/Efficiency[%]"), 
+                        (6, "Area %"), (9, "Utilization/Efficiency[%]"), 
+                        (7, "Area %"), 
+                        (8, "Area %"), 
+                        (9, "Area %"), 
+                        (10, "Area %")]
 
-    if not missing_values:
-        st.warning("Please fill in the required cells in the DIE CONSTRUCTION/COMPOSITION table.")
-    else:
-        # YIELD CALCULATION
-        die_construction_df = edited_df.copy()
-        # Read the data into a pandas DataFrame
-        technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
-     
-        # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
-        # Safely remove '%' and convert 'Area %' to floats
-        if 'Area %' in die_construction_df.columns:
-            die_construction_df['Area %'] = (
-                die_construction_df['Area %']
-                .astype(str)  # Convert to string to allow `.str` operations
-                .str.rstrip('%')  # Remove '%' if present
-                .replace('', '0')  # Replace empty strings with '0'
-                .astype(float) / 100  # Convert to float and normalize to a fraction
+        # Check if any of these specific cells are missing (NaN or empty string)
+        missing_values = any(
+            pd.isnull(edited_df.at[row, col]) or edited_df.at[row, col] == ""
+            for row, col in cells_to_check
             )
+
+        if not missing_values:
+            st.warning("Please fill in the required cells in the DIE CONSTRUCTION/COMPOSITION table.")
         else:
-            st.error("'Area %' column is missing in the uploaded data.")
-        # die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
-        # if die_construction_df['Area %'].isnull().any():
-        #     st.error("Area % contains invalid or missing values.")
-            #raise ValueError("Area % contains invalid or missing values.")
+            # YIELD CALCULATION
+            die_construction_df = edited_df.copy()
+            # Read the data into a pandas DataFrame
+            technology_defect_density_df = pd.read_csv(StringIO(tdd_data), sep="\t")
         
-        die_defect_density_df["Time"] = technology_defect_density_df["Time"]
-
-        # User input for A (Area of a Die)
-        # die_width = float(input("Enter the width of Die in mm: "))
-        # die_height = float(input("Enter the height of Die in mm: "))
-        die_width = Xdie
-        die_height = Ydie
-        
-        if die_width <= 0 or die_height <= 0:
-            raise ValueError("Die dimensions must be positive values.")
-        die_area = die_height * die_width
-
-        # User input for Edge Exclusion Factor (in mm)
-        # edge_exclusion_factor = float(input("Enter Edge Exclusion Factor in mm: "))
-        d = DIAMETER_OF_WAFER - edge_exclusion_factor
-
-        # Add user inputs to the DataFrame
-        die_defect_density_df['Die Width'] = f"{die_width} mm"
-        die_defect_density_df['Die Height'] = f"{die_height} mm"
-        die_defect_density_df['Edge Exclusion Factor'] = f"{edge_exclusion_factor} mm"
-        die_defect_density_df['Die Area'] = f"{die_area} mm²"
-        # Initialize an empty dictionary for the final area_dict
-        area_dict = {}
-        
-        # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
-        for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
-            if pd.notna(label) and pd.notna(area):
-                if label not in area_dict:
-                    area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
-                else:
-                    found = False
-                    for entry in area_dict[label]:
-                        if entry['Utilization'] == utilization:
-                            entry['Area'] += area
-                            found = True
-                            break
-                    if not found:
-                        area_dict[label].append({'Area': area, 'Utilization': utilization})
-
-        # Ensure the column is of type float64
-        die_defect_density_df['Die Aggregate DD'] = 0.0
-
-        # Extract the content inside the brackets from all columns
-        brackets_pattern = r"\[(.*?)\]"
-        percentage_pattern = r"(\d+)%"
-        column_bracket_dict = {}
-        for column in technology_defect_density_df.columns:
-            label_match = re.search(brackets_pattern, column)
-            percentage_match = re.search(percentage_pattern, column)
-            if label_match:
-                column_bracket_dict[label_match.group(1)] = {"column_name": column}
-                if percentage_match:
-                    column_bracket_dict[label_match.group(1)].update({"Utilization": percentage_match.group(1)})
-
-
-    
-        technology_defect_density_df['Die Aggregate DD'] = technology_defect_density_df.apply(
-            lambda row: calculate_aggregate_dd(row, area_dict, column_bracket_dict), axis=1
-        )
-
-        # Calculate yield for each row and add a new 'Yield' column
-        die_defect_density_df['Yield'] = technology_defect_density_df['Die Aggregate DD'].apply(
-            lambda defect_density: calculate_yield(die_area, defect_density)
-        )
-
-        pdpw = calculate_pdpw(die_area, d)
-
-        # Apply the function to calculate GDPW
-        die_defect_density_df['GDPW'] = die_defect_density_df['Yield'].apply(lambda yield_value: calculate_gdpw(yield_value, pdpw))
-
-        die_defect_density_df['Yield'] = die_defect_density_df['Yield'].apply(lambda y: f"{y * 100:.2f}%")
-        die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float).astype(str)# + " (def/cm²)"
-        die_defect_density_df['MFU'] = round(mfu(die_width, die_height)["MFU%"], 2)
-        die_defect_density_df['MFU'] = die_defect_density_df['MFU'].apply(lambda x: f"{round(x, 2)}%")
-        # Save the updated DataFrame back to a new CSV file
-        # output_file = "die_defect_density_updated.csv"
-        # die_defect_density_df.to_csv(output_file, index=False, encoding='utf-8')
-        # print(f"\nAggregated Die Defect Density, Yield, GDPW, and MFU columns added and saved to {output_file}")
+            # Remove the '%' sign, convert 'Area %' to floats, and divide by 100
+            # Safely remove '%' and convert 'Area %' to floats
+            if 'Area %' in die_construction_df.columns:
+                die_construction_df['Area %'] = (
+                    die_construction_df['Area %']
+                    .astype(str)  # Convert to string to allow `.str` operations
+                    .str.rstrip('%')  # Remove '%' if present
+                    .replace('', '0')  # Replace empty strings with '0'
+                    .astype(float) / 100  # Convert to float and normalize to a fraction
+                )
+            else:
+                st.error("'Area %' column is missing in the uploaded data.")
+            # die_construction_df['Area %'] = die_construction_df['Area %'].str.rstrip('%').astype(float, errors='ignore') / 100
+            # if die_construction_df['Area %'].isnull().any():
+            #     st.error("Area % contains invalid or missing values.")
+                #raise ValueError("Area % contains invalid or missing values.")
             
-    
-    # Display the Die Defect Density Table
-    st.subheader("YIELD TABLE")
-   
-    # Check if the dataframe is not empty
-    if not die_defect_density_df.empty:
-        # Select only the desired columns
-        display_df = die_defect_density_df[["Time", "Die Aggregate DD", "Yield", "GDPW"]]
-       
-        # Format and style the table for better readability
-        styled_display_df = display_df.style.format({
-            "Time": "{}",
-            "Die Aggregate DD (def/cm^2)": "{}",  # Format DD values to 2 decimals
-            "Yield": "{}",
-            "GDPW": "{}"  # Format GDPW values to 2 decimals
-        }).set_table_styles([
-            {'selector': 'td', 'props': [('text-align', 'center')]},
-            {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]}
-        ])
+            die_defect_density_df["Time"] = technology_defect_density_df["Time"]
 
-        # Render the table with Streamlit's interactive dataframe
-        st.dataframe(styled_display_df, use_container_width=True)
+            # User input for A (Area of a Die)
+            # die_width = float(input("Enter the width of Die in mm: "))
+            # die_height = float(input("Enter the height of Die in mm: "))
+            die_width = Xdie
+            die_height = Ydie
+            
+            if die_width <= 0 or die_height <= 0:
+                raise ValueError("Die dimensions must be positive values.")
+            die_area = die_height * die_width
+
+            # User input for Edge Exclusion Factor (in mm)
+            # edge_exclusion_factor = float(input("Enter Edge Exclusion Factor in mm: "))
+            d = DIAMETER_OF_WAFER - edge_exclusion_factor
+
+            # Add user inputs to the DataFrame
+            die_defect_density_df['Die Width'] = f"{die_width} mm"
+            die_defect_density_df['Die Height'] = f"{die_height} mm"
+            die_defect_density_df['Edge Exclusion Factor'] = f"{edge_exclusion_factor} mm"
+            die_defect_density_df['Die Area'] = f"{die_area} mm²"
+            # Initialize an empty dictionary for the final area_dict
+            area_dict = {}
+            
+            # Loop through Defectivity Labels, Area %, and Utilization/ Efficiency [%] in the DataFrame
+            for label, area, utilization in zip(die_construction_df['Defectivity Labels'], die_construction_df['Area %'], die_construction_df['Utilization/Efficiency[%]']):
+                if pd.notna(label) and pd.notna(area):
+                    if label not in area_dict:
+                        area_dict[label] = [{'Area': area, 'Utilization': utilization if pd.notna(utilization) else None}]
+                    else:
+                        found = False
+                        for entry in area_dict[label]:
+                            if entry['Utilization'] == utilization:
+                                entry['Area'] += area
+                                found = True
+                                break
+                        if not found:
+                            area_dict[label].append({'Area': area, 'Utilization': utilization})
+
+            # Ensure the column is of type float64
+            die_defect_density_df['Die Aggregate DD'] = 0.0
+
+            # Extract the content inside the brackets from all columns
+            brackets_pattern = r"\[(.*?)\]"
+            percentage_pattern = r"(\d+)%"
+            column_bracket_dict = {}
+            for column in technology_defect_density_df.columns:
+                label_match = re.search(brackets_pattern, column)
+                percentage_match = re.search(percentage_pattern, column)
+                if label_match:
+                    column_bracket_dict[label_match.group(1)] = {"column_name": column}
+                    if percentage_match:
+                        column_bracket_dict[label_match.group(1)].update({"Utilization": percentage_match.group(1)})
+
+
         
-        # Allow downloading the table as CSV
-        csv = display_df.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download Yield Table as CSV",
-            data=csv,
-            file_name="die_defect_density_table.csv",
-            mime="text/csv",
-        )
+            technology_defect_density_df['Die Aggregate DD'] = technology_defect_density_df.apply(
+                lambda row: calculate_aggregate_dd(row, area_dict, column_bracket_dict), axis=1
+            )
 
-        # Sample data (replace these with your actual variables from your data)
-        time = pd.to_datetime(die_defect_density_df["Time"])  # Example time variable
-        # time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
-        # die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
-        # yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
-        # Ensure Die Aggregate DD values are numeric
-        die_aggregate_dd = pd.to_numeric(die_defect_density_df["Die Aggregate DD"].values[::-1], errors="coerce")
+            # Calculate yield for each row and add a new 'Yield' column
+            die_defect_density_df['Yield'] = technology_defect_density_df['Die Aggregate DD'].apply(
+                lambda defect_density: calculate_yield(die_area, defect_density)
+            )
 
-        # Ensure Yield values are numeric, stripping '%' if necessary
-        yield_data = [float(y.strip('%')) for y in die_defect_density_df["Yield"].values]
+            pdpw = calculate_pdpw(die_area, d)
 
-        # Safeguard for NaN values
-        if pd.Series(die_aggregate_dd).isnull().any():
-            st.error("Die Aggregate DD contains invalid values. Please check your data.")
-        elif any(pd.isnull(yield_data)):
-            st.error("Yield contains invalid values. Please check your data.")
+            # Apply the function to calculate GDPW
+            die_defect_density_df['GDPW'] = die_defect_density_df['Yield'].apply(lambda yield_value: calculate_gdpw(yield_value, pdpw))
+
+            die_defect_density_df['Yield'] = die_defect_density_df['Yield'].apply(lambda y: f"{y * 100:.2f}%")
+            die_defect_density_df['Die Aggregate DD'] = technology_defect_density_df['Die Aggregate DD'].astype(float).astype(str)# + " (def/cm²)"
+            die_defect_density_df['MFU'] = round(mfu(die_width, die_height)["MFU%"], 2)
+            die_defect_density_df['MFU'] = die_defect_density_df['MFU'].apply(lambda x: f"{round(x, 2)}%")
+            # Save the updated DataFrame back to a new CSV file
+            # output_file = "die_defect_density_updated.csv"
+            # die_defect_density_df.to_csv(output_file, index=False, encoding='utf-8')
+            # print(f"\nAggregated Die Defect Density, Yield, GDPW, and MFU columns added and saved to {output_file}")
+                
+        
+        # Display the Die Defect Density Table
+        st.subheader("YIELD TABLE")
+    
+        # Check if the dataframe is not empty
+        if not die_defect_density_df.empty:
+            # Select only the desired columns
+            display_df = die_defect_density_df[["Time", "Die Aggregate DD", "Yield", "GDPW"]]
+        
+            # Format and style the table for better readability
+            styled_display_df = display_df.style.format({
+                "Time": "{}",
+                "Die Aggregate DD (def/cm^2)": "{}",  # Format DD values to 2 decimals
+                "Yield": "{}",
+                "GDPW": "{}"  # Format GDPW values to 2 decimals
+            }).set_table_styles([
+                {'selector': 'td', 'props': [('text-align', 'center')]},
+                {'selector': 'th', 'props': [('text-align', 'center'), ('font-weight', 'bold')]}
+            ])
+
+            # Render the table with Streamlit's interactive dataframe
+            st.dataframe(styled_display_df, use_container_width=True)
+            
+            # Allow downloading the table as CSV
+            csv = display_df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="Download Yield Table as CSV",
+                data=csv,
+                file_name="die_defect_density_table.csv",
+                mime="text/csv",
+            )
+
+            # Sample data (replace these with your actual variables from your data)
+            time = pd.to_datetime(die_defect_density_df["Time"])  # Example time variable
+            # time_dad = die_defect_density_df["Time"][::-1]  # Example time variable
+            # die_aggregate_dd = die_defect_density_df["Die Aggregate DD"].values  # Example Die Aggregate DD values
+            # yield_data = die_defect_density_df["Yield"].values  # Example Yield percentages
+            # Ensure Die Aggregate DD values are numeric
+            die_aggregate_dd = pd.to_numeric(die_defect_density_df["Die Aggregate DD"].values[::-1], errors="coerce")
+
+            # Ensure Yield values are numeric, stripping '%' if necessary
+            yield_data = [float(y.strip('%')) for y in die_defect_density_df["Yield"].values]
+
+            # Safeguard for NaN values
+            if pd.Series(die_aggregate_dd).isnull().any():
+                st.error("Die Aggregate DD contains invalid values. Please check your data.")
+            elif any(pd.isnull(yield_data)):
+                st.error("Yield contains invalid values. Please check your data.")
+            else:
+                # Create subplots for two adjacent plots
+                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=False)
+
+                # Plot Die Aggregate DD vs. Time
+                ax1.set_title("Die Aggregate DD vs Time")
+                ax1.set_xlabel("Time")
+                ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
+                ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
+                ax1.tick_params(axis="y", labelcolor="tab:blue")
+                ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+                ax1.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
+                # ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+                ax1.grid(visible=True, linestyle="--", alpha=0.5)
+
+                # Automatically scale y-axis and make it consistent across the plots
+                ax1.set_ylim(min(die_aggregate_dd) * 0.9, max(die_aggregate_dd) * 1.1)  # Scale for 10% padding
+
+                # Plot Yield vs. Time
+                ax2.set_title("Yield vs Time")
+                ax2.set_xlabel("Time")
+                ax2.set_ylabel("Yield (%)", color="tab:green")
+                ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
+                ax2.tick_params(axis="y", labelcolor="tab:green")
+                ax2.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
+                ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
+                # ax2.set_xticks(time)  # Standardize x-axis ticks
+                # ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
+                ax2.grid(visible=True, linestyle="--", alpha=0.5)
+
+                # Automatically scale y-axis and make it consistent across the plots
+                # yield_values = [float(y.strip('%')) for y in yield_data]  # Remove % and convert to float
+                yield_values = [float(y.strip('%')) if isinstance(y, str) else float(y) for y in yield_data]
+
+                ax2.set_ylim(min(yield_values) * 0.9, max(yield_values) * 1.1)  # Scale for 10% padding
+
+                # Add legends
+                ax1.legend(loc="upper left")
+                ax2.legend(loc="upper left")
+
+                # Adjust layout for better spacing
+                plt.tight_layout()
+
+                # Display the plots in Streamlit
+                st.pyplot(fig)
         else:
-            # Create subplots for two adjacent plots
-            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=False)
-
-            # Plot Die Aggregate DD vs. Time
-            ax1.set_title("Die Aggregate DD vs Time")
-            ax1.set_xlabel("Time")
-            ax1.set_ylabel("Die Aggregate DD", color="tab:blue")
-            ax1.plot(time, die_aggregate_dd, label="Die Aggregate DD", color="tab:blue", marker="o")
-            ax1.tick_params(axis="y", labelcolor="tab:blue")
-            ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
-            ax1.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
-            # ax1.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
-            ax1.grid(visible=True, linestyle="--", alpha=0.5)
-
-            # Automatically scale y-axis and make it consistent across the plots
-            ax1.set_ylim(min(die_aggregate_dd) * 0.9, max(die_aggregate_dd) * 1.1)  # Scale for 10% padding
-
-            # Plot Yield vs. Time
-            ax2.set_title("Yield vs Time")
-            ax2.set_xlabel("Time")
-            ax2.set_ylabel("Yield (%)", color="tab:green")
-            ax2.plot(time, yield_data, label="Yield", color="tab:green", marker="x")
-            ax2.tick_params(axis="y", labelcolor="tab:green")
-            ax2.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))  # Format x-axis to show Month and Year
-            ax2.set_xticks(time[::max(1, len(time) // 6)])  # Set equidistant ticks
-            # ax2.set_xticks(time)  # Standardize x-axis ticks
-            # ax2.set_xticklabels(time, rotation=90)  # Rotate x-axis labels
-            ax2.grid(visible=True, linestyle="--", alpha=0.5)
-
-            # Automatically scale y-axis and make it consistent across the plots
-            # yield_values = [float(y.strip('%')) for y in yield_data]  # Remove % and convert to float
-            yield_values = [float(y.strip('%')) if isinstance(y, str) else float(y) for y in yield_data]
-
-            ax2.set_ylim(min(yield_values) * 0.9, max(yield_values) * 1.1)  # Scale for 10% padding
-
-            # Add legends
-            ax1.legend(loc="upper left")
-            ax2.legend(loc="upper left")
-
-            # Adjust layout for better spacing
-            plt.tight_layout()
-
-            # Display the plots in Streamlit
-            st.pyplot(fig)
-    else:
-        st.warning("No data available to display in the Die Defect Density Table.")
+            st.warning("No data available to display in the Die Defect Density Table.")
