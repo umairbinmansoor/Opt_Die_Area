@@ -83,24 +83,48 @@ with col2:
     # Display in Streamlit
     st.pyplot(fig)
 
+# Add download and upload buttons side by side
+col1, col2 = st.columns([1, 1])  # Two columns for alignment
 
-# Table placeholder
-st.subheader("Die Construction / Composition Table")
+with col1:
+    # Table placeholder
+    st.subheader("Die Construction / Composition Table")
 
-# Create a DataFrame with the specified column names and empty cells
-columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
-columns1 = ["Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
-placeholder_df = pd.DataFrame(dc_data1, columns=columns1)
+    # Create a DataFrame with the specified column names and empty cells
+    columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+    columns1 = ["Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
+    placeholder_df = pd.DataFrame(dc_data1, columns=columns1)
 
-# Display the interactive table
-edited_df = st.data_editor(
-    placeholder_df,
-    disabled=("Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
-    use_container_width=False
-)
+    # Display the interactive table
+    edited_df = st.data_editor(
+        placeholder_df,
+        disabled=("Category", "Subcategory", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
+        use_container_width=False
+    )
+with col2:
+    st.subheader("Area % Distribution")
 
-# Create a DataFrame from dc_data and columns
-# template_df = pd.DataFrame(dc_data1, columns=columns1)
+    placeholder_df.loc[placeholder_df['Category'] == 'Mesh', 'Subcategory'] = 'Mesh'
+    placeholder_df.loc[placeholder_df['Category'] == 'White Space', 'Subcategory'] = 'White Space'
+    placeholder_df.loc[placeholder_df['Category'] == 'Analog', 'Subcategory'] = 'Analog'
+
+    # Ensure Area % column is numeric
+    placeholder_df["Area %"] = placeholder_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
+
+    # Create the pie chart
+    fig = px.sunburst(placeholder_df, path=['Category', 'Subcategory'], values='Area %')
+    # fig = px.pie(edited_df, names='Category', values='Area %', hole=0.3)
+
+    # Customize the chart (optional)
+    fig.update_traces(textinfo='label+value', textfont_size=12)
+    fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
+
+    # Display the chart
+    st.plotly_chart(fig)
+
+    placeholder_df.loc[placeholder_df['Category'] == 'Mesh', 'Subcategory'] = ''
+    placeholder_df.loc[placeholder_df['Category'] == 'White Space', 'Subcategory'] = ''
+    placeholder_df.loc[placeholder_df['Category'] == 'Analog', 'Subcategory'] = ''
 
 # Convert the DataFrame to CSV
 csv_template = placeholder_df.to_csv(index=False).encode('utf-8')
