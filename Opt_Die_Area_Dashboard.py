@@ -112,15 +112,15 @@ with col2:
     placeholder_df["Area %"] = placeholder_df["Area %"].str.rstrip('%').astype(float, errors='ignore')
 
     # Create the pie chart
-    fig = px.sunburst(placeholder_df, path=['Category', 'Subcategory'], values='Area %')
+    fig1 = px.sunburst(placeholder_df, path=['Category', 'Subcategory'], values='Area %')
     # fig = px.pie(edited_df, names='Category', values='Area %', hole=0.3)
 
     # Customize the chart (optional)
-    fig.update_traces(textinfo='label+value', textfont_size=12)
-    fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
+    fig1.update_traces(textinfo='label+value', textfont_size=12)
+    fig1.update_layout(margin=dict(t=50, l=25, r=25, b=25))
 
     # Display the chart
-    st.plotly_chart(fig)
+    st.plotly_chart(fig1)
 
     placeholder_df.loc[placeholder_df['Category'] == 'Mesh', 'Subcategory'] = ''
     placeholder_df.loc[placeholder_df['Category'] == 'White Space', 'Subcategory'] = ''
