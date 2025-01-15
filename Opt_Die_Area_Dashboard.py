@@ -88,7 +88,7 @@ col1, col2 = st.columns([1, 1])  # Two columns for alignment
 
 with col1:
     # Table placeholder
-    st.subheader("Die Construction / Composition Table")
+    st.subheader("Die Construction / Composition Table Template")
 
     # Create a DataFrame with the specified column names and empty cells
     columns = ["Category", "Subcategory", "Defectivity Labels", "Area %", "Utilization/Efficiency[%]", "Must Work", "Redundancy"]
@@ -168,7 +168,7 @@ if uploaded_file is not None:
             table_col, pie_col = st.columns([1, 1])  # Two columns for alignment
             
             with table_col:
-                st.subheader("Die Construction / Composition Table")
+                st.subheader("User Die Construction / Composition Table")
                 st.data_editor(
                     uploaded_df.drop("Defectivity Labels", axis='columns'),
                     disabled=("Category", "Subcategory", "Utilization/Efficiency[%]", "Must Work", "Redundancy"),
