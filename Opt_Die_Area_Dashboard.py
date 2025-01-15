@@ -26,7 +26,7 @@ with col1:
     Scribe_use_flag = st.selectbox("Use Scribe Width?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
     Scribe_x_width = st.number_input("Enter Scribe X Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1, disabled=True)
     Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1, disabled=True)
-    Disagg_die = st.selectbox("Disaggregate Die into Chiplet?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
+    Disagg_die = st.selectbox("**Disaggregate Die into Chiplet?**", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
 
 with col2:
     #st.subheader("Die Representation")
