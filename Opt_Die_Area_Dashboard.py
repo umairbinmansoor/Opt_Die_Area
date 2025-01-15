@@ -120,7 +120,7 @@ with col2:
     fig1.update_layout(margin=dict(t=50, l=25, r=25, b=25))
 
     # Display the chart
-    st.plotly_chart(fig1)
+    st.plotly_chart(fig1, use_container_width=True, key="chart1")
 
     placeholder_df.loc[placeholder_df['Category'] == 'Mesh', 'Subcategory'] = ''
     placeholder_df.loc[placeholder_df['Category'] == 'White Space', 'Subcategory'] = ''
@@ -195,7 +195,7 @@ if uploaded_file is not None:
                 fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
 
                 # Display the chart
-                st.plotly_chart(fig)
+                st.plotly_chart(fig, use_container_width=True, key="chart2")
 
                 edited_df.loc[edited_df['Category'] == 'Mesh', 'Subcategory'] = ''
                 edited_df.loc[edited_df['Category'] == 'White Space', 'Subcategory'] = ''
