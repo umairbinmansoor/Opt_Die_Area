@@ -68,7 +68,7 @@ with col2:
     st.pyplot(fig)
 
 st.subheader("Disaggregate Die into Chiplet?")
-Disagg_die = st.selectbox("", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
+Disagg_die = st.selectbox(options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
 
 # Add download and upload buttons side by side
 col1, col2 = st.columns([1, 1])  # Two columns for alignment
