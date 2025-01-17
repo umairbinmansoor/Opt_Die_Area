@@ -26,24 +26,8 @@ with col1:
     Scribe_use_flag = st.selectbox("Use Scribe Width?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
     Scribe_x_width = st.number_input("Enter Scribe X Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1, disabled=True)
     Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1, disabled=True)
-    Disagg_die = st.selectbox("**Disaggregate Die into Chiplet?**", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
 
 with col2:
-    #st.subheader("Die Representation")
-    # fig_width = Xdie / max(Xdie, Ydie) * 4  # Scale width relative to a base size
-    # fig_height = Ydie / max(Xdie, Ydie) * 4  # Scale height relative to a base size
-
-    # fig, ax = plt.subplots(figsize=(fig_width, fig_height))  # Set dynamic figure size
-    # ax.add_patch(plt.Rectangle((0, 0), Xdie, Ydie, facecolor="royalblue", edgecolor=None, lw=2))
-    # ax.set_xlim(0, Xdie)
-    # ax.set_ylim(0, Ydie)
-    # ax.set_aspect('equal', adjustable='box')  # Keep the aspect ratio equal
-    # #ax.set_title(f"Width={Xdie} mm, Height={Ydie} mm", fontsize=6)
-    # ax.tick_params(axis='both', labelsize=8)  # Reduce X-tick and Y-tick font size
-    # ax.set_xlabel("Xdie (mm)", fontsize=8)
-    # ax.set_ylabel("Ydie (mm)", fontsize=8)
-    # st.pyplot(fig)
-    
     # Define die dimensions
     die_area = Xdie * Ydie
     
@@ -82,6 +66,9 @@ with col2:
 
     # Display in Streamlit
     st.pyplot(fig)
+
+st.subheader("Disaggregate Die into Chiplet?")
+Disagg_die = st.selectbox("", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
 
 # Add download and upload buttons side by side
 col1, col2 = st.columns([1, 1])  # Two columns for alignment
