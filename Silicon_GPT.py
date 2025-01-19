@@ -10,7 +10,7 @@ st.markdown(
     <style>
     [data-testid="stSidebar"] {
         min-width: 250px; /* Adjust this value to control the width */
-        max-width: 300px; /* Ensures the width is fixed */
+        max-width: 200px; /* Ensures the width is fixed */
         background-color: #f4f4f4; /* Optional: Sidebar background color */
         padding-top: 20px;
     }
@@ -60,31 +60,25 @@ for message in st.session_state.messages:
     else:
         st.markdown(f"**Bot:** {message['content']}")
 
-# Input box with send button inside
+# User input with arrow send icon
 st.markdown(
     """
-    <div class="input-container">
-        <input type="text" id="user_input" class="input-box" placeholder="Message SiliconGPT">
-        <span class="send-button" onclick="sendMessage()">➡️</span>
-    </div>
-
-    <script>
-    const input = document.getElementById("user_input");
-    input.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            sendMessage();
-        }
-    });
-
-    function sendMessage() {
-        const userInput = document.getElementById("user_input").value;
-        if (userInput.trim() !== "") {
-            // Pass the input back to Streamlit (placeholder, implement real logic)
-            document.getElementById("user_input").value = ""; // Clear input
-            console.log("Message Sent: " + userInput); // Debug in console
-        }
+    <style>
+    input[type="text"] {
+        padding-left: 10px;
     }
-    </script>
+    .send-arrow {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        color: #888;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .send-arrow:hover {
+        color: #21a0a0;
+    }
+    </style>
     """,
     unsafe_allow_html=True,
 )
