@@ -2,7 +2,7 @@ import streamlit as st
 
 # App title
 st.set_page_config(page_title="Chatbot Interface", layout="wide")
-st.title("ChatGPT-like Chatbot Interface")
+st.title("Silicon GPT")
 
 # Sidebar for navigation
 st.sidebar.title("Navigation")
