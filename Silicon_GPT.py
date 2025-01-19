@@ -26,7 +26,7 @@ for message in st.session_state.messages:
         st.markdown(f"**Bot:** {message['content']}")
 
 # User input
-user_input = st.text_input("Message ChatGPT:", key="user_input", placeholder="Type your message...")
+user_input = st.text_input("", key="user_input", placeholder="Message SiliconGPT")
 
 # Send button
 if st.button("Send"):
