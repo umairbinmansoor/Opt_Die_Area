@@ -8,7 +8,7 @@ st.title("Silicon GPT")
 st.sidebar.title("Navigation")
 st.sidebar.markdown("### Recent Conversations")
 
-# Replace buttons with text representing topics
+# Hoverable text links for recent conversations using HTML
 recent_conversations = [
     "Die Yield Calculator",
     "AI Semiconductor Rephrasings",
@@ -16,10 +16,30 @@ recent_conversations = [
     "HCI Course Teaching Support",
 ]
 
+# CSS for hover effect
+st.markdown(
+    """
+    <style>
+    .hover-link {
+        color: #2b6777; 
+        font-size: 14px;
+        margin-bottom: 10px;
+        text-decoration: none;
+        transition: color 0.3s ease-in-out;
+    }
+    .hover-link:hover {
+        color: #21a0a0;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Display links in the sidebar
 for topic in recent_conversations:
-    if st.sidebar.button(topic):
-        st.session_state["selected_topic"] = topic
-        st.session_state.messages = [{"role": "bot", "content": f"You selected: {topic}"}]
+    st.sidebar.markdown(f'<div class="hover-link">{topic}</div>', unsafe_allow_html=True)
 
 # Chat container
 st.markdown("## What can I help with?")
@@ -35,21 +55,50 @@ for message in st.session_state.messages:
     else:
         st.markdown(f"**Bot:** {message['content']}")
 
-# User input
-user_input = st.text_input("", key="user_input", placeholder="Message SiliconGPT")
+# User input with arrow send icon
+st.markdown(
+    """
+    <style>
+    input[type="text"] {
+        padding-left: 10px;
+    }
+    .send-arrow {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        color: #888;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .send-arrow:hover {
+        color: #21a0a0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-# Send button
-if st.button("Send"):
-    if user_input.strip():
-        # Store user message
-        st.session_state.messages.append({"role": "user", "content": user_input})
+# Collect user input and send when Enter is pressed
+input_container = st.container()
+user_input = st.text_input(
+    "",
+    key="user_input",
+    placeholder="Message SiliconGPT",
+    label_visibility="collapsed",
+)
 
-        # Bot response (placeholder for real AI interaction)
-        bot_response = "This is a placeholder response. Replace with AI logic."
-        st.session_state.messages.append({"role": "bot", "content": bot_response})
+arrow_clicked = st.markdown('<div class="send-arrow">➡️</div>', unsafe_allow_html=True)
 
-        # Clear input box
-        st.session_state.user_input = ""
+if user_input.strip():
+    # Store user message
+    st.session_state.messages.append({"role": "user", "content": user_input})
+
+    # Bot response (placeholder for real AI interaction)
+    bot_response = "This is a placeholder response. Replace with AI logic."
+    st.session_state.messages.append({"role": "bot", "content": bot_response})
+
+    # Clear input box
+    st.session_state.user_input = ""
 
 # Optional Footer Buttons
 st.markdown("---")
