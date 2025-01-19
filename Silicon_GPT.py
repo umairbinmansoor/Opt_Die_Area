@@ -2,7 +2,7 @@ import streamlit as st
 
 # App title
 st.set_page_config(page_title="Chatbot Interface", layout="wide")
-st.title("Silicon GPT")
+st.title("SiAiGPT")
 
 # Custom CSS for sidebar and input styling
 st.markdown(
@@ -89,7 +89,7 @@ for message in st.session_state.messages:
 st.markdown(
     """
     <div class="input-container">
-        <input type="text" id="user_input" class="input-box" placeholder="Message SiliconGPT">
+        <input type="text" id="user_input" class="input-box" placeholder="Message SiAiGPT">
         <span class="send-arrow" onclick="sendMessage()">➡️</span>
     </div>
 
