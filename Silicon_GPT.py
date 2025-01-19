@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="Chatbot Interface", layout="wide")
 st.title("Silicon GPT")
 
-# Custom CSS for reducing the sidebar width
+# Custom CSS for sidebar and input styling
 st.markdown(
     """
     <style>
@@ -25,6 +25,31 @@ st.markdown(
         color: #21a0a0;
         font-weight: bold;
         cursor: pointer;
+    }
+    .input-container {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 5px 10px;
+        background-color: #fff;
+        width: 100%;
+    }
+    .input-box {
+        flex-grow: 1;
+        border: none;
+        outline: none;
+        font-size: 16px;
+    }
+    .send-arrow {
+        color: #888;
+        font-size: 18px;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: color 0.3s ease-in-out;
+    }
+    .send-arrow:hover {
+        color: #21a0a0;
     }
     </style>
     """,
@@ -60,50 +85,36 @@ for message in st.session_state.messages:
     else:
         st.markdown(f"**Bot:** {message['content']}")
 
-# User input with arrow send icon
+# Input box with embedded send button
 st.markdown(
     """
-    <style>
-    input[type="text"] {
-        padding-left: 10px;
+    <div class="input-container">
+        <input type="text" id="user_input" class="input-box" placeholder="Message SiliconGPT">
+        <span class="send-arrow" onclick="sendMessage()">➡️</span>
+    </div>
+
+    <script>
+    const input = document.getElementById("user_input");
+    input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const userInput = document.getElementById("user_input").value;
+        if (userInput.trim() !== "") {
+            // Simulate sending a message to Streamlit (for display only)
+            const messageContainer = document.createElement("div");
+            messageContainer.textContent = "You: " + userInput;
+            document.body.appendChild(messageContainer);
+            document.getElementById("user_input").value = ""; // Clear input
+        }
     }
-    .send-arrow {
-        position: absolute;
-        right: 10px;
-        top: 8px;
-        color: #888;
-        font-size: 18px;
-        cursor: pointer;
-    }
-    .send-arrow:hover {
-        color: #21a0a0;
-    }
-    </style>
+    </script>
     """,
     unsafe_allow_html=True,
 )
-
-# Collect user input and send when Enter is pressed
-input_container = st.container()
-user_input = st.text_input(
-    "",
-    key="user_input",
-    placeholder="Message SiliconGPT",
-    label_visibility="collapsed",
-)
-
-arrow_clicked = st.markdown('<div class="send-arrow">➡️</div>', unsafe_allow_html=True)
-
-if user_input.strip():
-    # Store user message
-    st.session_state.messages.append({"role": "user", "content": user_input})
-
-    # Bot response (placeholder for real AI interaction)
-    bot_response = "This is a placeholder response. Replace with AI logic."
-    st.session_state.messages.append({"role": "bot", "content": bot_response})
-
-    # Clear input box
-    st.session_state.user_input = ""
 
 # Optional Footer Buttons
 st.markdown("---")
