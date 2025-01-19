@@ -7,9 +7,19 @@ st.title("Silicon GPT")
 # Sidebar for navigation
 st.sidebar.title("Navigation")
 st.sidebar.markdown("### Recent Conversations")
-st.sidebar.button("Conversation 1")
-st.sidebar.button("Conversation 2")
-st.sidebar.button("New Conversation")
+
+# Replace buttons with text representing topics
+recent_conversations = [
+    "Die Yield Calculator",
+    "AI Semiconductor Rephrasings",
+    "Tanh Derivative: 1 - 1 Tanh^2",
+    "HCI Course Teaching Support",
+]
+
+for topic in recent_conversations:
+    if st.sidebar.button(topic):
+        st.session_state["selected_topic"] = topic
+        st.session_state.messages = [{"role": "bot", "content": f"You selected: {topic}"}]
 
 # Chat container
 st.markdown("## What can I help with?")
