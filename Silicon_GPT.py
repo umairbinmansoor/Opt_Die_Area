@@ -10,7 +10,7 @@ st.markdown(
     <style>
     [data-testid="stSidebar"] {
         min-width: 250px; /* Adjust this value to control the width */
-        max-width: 200px; /* Ensures the width is fixed */
+        max-width: 300px; /* Ensures the width is fixed */
         background-color: #f4f4f4; /* Optional: Sidebar background color */
         padding-top: 20px;
     }
