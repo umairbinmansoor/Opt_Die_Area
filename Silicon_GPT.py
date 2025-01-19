@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="Chatbot Interface", layout="wide")
 st.title("Silicon GPT")
 
-# Custom CSS for sidebar width and input styling
+# Custom CSS for sidebar width, input styling, and hover effects
 st.markdown(
     """
     <style>
@@ -13,6 +13,20 @@ st.markdown(
         max-width: 300px;
         background-color: #f4f4f4; /* Optional: Sidebar background color */
         padding-top: 20px;
+    }
+
+    /* Style for hoverable chat topics in the sidebar */
+    .hover-link {
+        font-size: 16px;
+        color: #333;
+        margin: 5px 0;
+        padding: 8px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+    .hover-link:hover {
+        background-color: #21a0a0; /* Highlight background color */
+        color: white; /* Highlight text color */
     }
 
     /* Style for the input box with embedded arrow */
