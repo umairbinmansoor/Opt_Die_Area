@@ -4,55 +4,27 @@ import streamlit as st
 st.set_page_config(page_title="Chatbot Interface", layout="wide")
 st.title("Silicon GPT")
 
-# Custom CSS for sidebar width, input styling, and hover effects
+# Custom CSS for reducing the sidebar width
 st.markdown(
     """
     <style>
     [data-testid="stSidebar"] {
-        min-width: 250px; /* Adjust this value to control the sidebar width */
-        max-width: 300px;
+        min-width: 200px; /* Adjust this value to control the width */
+        max-width: 200px; /* Ensures the width is fixed */
         background-color: #f4f4f4; /* Optional: Sidebar background color */
         padding-top: 20px;
     }
-
-    /* Style for hoverable chat topics in the sidebar */
     .hover-link {
-        font-size: 16px;
-        color: #333;
-        margin: 5px 0;
-        padding: 8px 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-    }
-    .hover-link:hover {
-        background-color: #21a0a0; /* Highlight background color */
-        color: white; /* Highlight text color */
-    }
-
-    /* Style for the input box with embedded arrow */
-    .input-container {
-        display: flex;
-        align-items: center;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 5px 10px;
-        background-color: #fff;
-    }
-    .input-box {
-        flex-grow: 1;
-        border: none;
-        outline: none;
-        font-size: 16px;
-    }
-    .send-button {
-        cursor: pointer;
-        font-size: 18px;
-        color: #888;
-        margin-left: 8px;
+        color: #2b6777; 
+        font-size: 14px;
+        margin-bottom: 10px;
+        text-decoration: none;
         transition: color 0.3s ease-in-out;
     }
-    .send-button:hover {
+    .hover-link:hover {
         color: #21a0a0;
+        font-weight: bold;
+        cursor: pointer;
     }
     </style>
     """,
@@ -88,34 +60,50 @@ for message in st.session_state.messages:
     else:
         st.markdown(f"**Bot:** {message['content']}")
 
-# Input box with send button inside
+# User input with arrow send icon
 st.markdown(
     """
-    <div class="input-container">
-        <input type="text" id="user_input" class="input-box" placeholder="Message SiliconGPT">
-        <span class="send-button" onclick="sendMessage()">➡️</span>
-    </div>
-
-    <script>
-    const input = document.getElementById("user_input");
-    input.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            sendMessage();
-        }
-    });
-
-    function sendMessage() {
-        const userInput = document.getElementById("user_input").value;
-        if (userInput.trim() !== "") {
-            // Pass the input back to Streamlit (placeholder, implement real logic)
-            document.getElementById("user_input").value = ""; // Clear input
-            console.log("Message Sent: " + userInput); // Debug in console
-        }
+    <style>
+    input[type="text"] {
+        padding-left: 10px;
     }
-    </script>
+    .send-arrow {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        color: #888;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .send-arrow:hover {
+        color: #21a0a0;
+    }
+    </style>
     """,
     unsafe_allow_html=True,
 )
+
+# Collect user input and send when Enter is pressed
+input_container = st.container()
+user_input = st.text_input(
+    "",
+    key="user_input",
+    placeholder="Message SiliconGPT",
+    label_visibility="collapsed",
+)
+
+arrow_clicked = st.markdown('<div class="send-arrow">➡️</div>', unsafe_allow_html=True)
+
+if user_input.strip():
+    # Store user message
+    st.session_state.messages.append({"role": "user", "content": user_input})
+
+    # Bot response (placeholder for real AI interaction)
+    bot_response = "This is a placeholder response. Replace with AI logic."
+    st.session_state.messages.append({"role": "bot", "content": bot_response})
+
+    # Clear input box
+    st.session_state.user_input = ""
 
 # Optional Footer Buttons
 st.markdown("---")
