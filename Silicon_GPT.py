@@ -4,22 +4,16 @@ import streamlit as st
 st.set_page_config(page_title="Chatbot Interface", layout="wide")
 st.title("Silicon GPT")
 
-# Sidebar for navigation
-st.sidebar.title("Navigation")
-st.sidebar.markdown("### Recent Conversations")
-
-# Hoverable text links for recent conversations using HTML
-recent_conversations = [
-    "Die Yield Calculator",
-    "AI Semiconductor Rephrasings",
-    "Tanh Derivative: 1 - 1 Tanh^2",
-    "HCI Course Teaching Support",
-]
-
-# CSS for hover effect
+# Custom CSS for reducing the sidebar width
 st.markdown(
     """
     <style>
+    [data-testid="stSidebar"] {
+        min-width: 200px; /* Adjust this value to control the width */
+        max-width: 200px; /* Ensures the width is fixed */
+        background-color: #f4f4f4; /* Optional: Sidebar background color */
+        padding-top: 20px;
+    }
     .hover-link {
         color: #2b6777; 
         font-size: 14px;
@@ -37,7 +31,18 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Display links in the sidebar
+# Sidebar for navigation
+st.sidebar.title("Navigation")
+st.sidebar.markdown("### Recent Conversations")
+
+# Hoverable text links for recent conversations
+recent_conversations = [
+    "Die Yield Calculator",
+    "AI Semiconductor Rephrasings",
+    "Tanh Derivative: 1 - 1 Tanh^2",
+    "HCI Course Teaching Support",
+]
+
 for topic in recent_conversations:
     st.sidebar.markdown(f'<div class="hover-link">{topic}</div>', unsafe_allow_html=True)
 
@@ -98,13 +103,4 @@ if user_input.strip():
     st.session_state.messages.append({"role": "bot", "content": bot_response})
 
     # Clear input box
-    st.session_state.user_input = ""
-
-# Optional Footer Buttons
-st.markdown("---")
-cols = st.columns(5)
-cols[0].button("Create image")
-cols[1].button("Get advice")
-cols[2].button("Brainstorm")
-cols[3].button("Help me write")
-cols[4].button("Summarize text")
+    st.sessi
