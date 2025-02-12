@@ -11,7 +11,7 @@ DIAMETER_OF_WAFER = 300  # mm
 # Yield Models
 SEEDS_MODEL = "Seeds model"
 POISSON_MODEL = "Poisson model"
-MURPHY_MODEL = "Murphy's model"
+MURPHY_MODEL = "Murphys model"
 EXP_MODEL = "Exponential model"
 
 dc_data = [

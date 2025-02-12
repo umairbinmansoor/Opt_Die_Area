@@ -29,7 +29,7 @@ with col1:
     # New selectbox for choosing the Yield model
     yield_model = st.selectbox(
         "Select Yield Model:", 
-        options=["Seeds model", "Murphy's model", "Poisson model", "Exponential model"]
+        options=["Seeds model", "Murphys model", "Poisson model", "Exponential model"]
     )
 
 with col2:
