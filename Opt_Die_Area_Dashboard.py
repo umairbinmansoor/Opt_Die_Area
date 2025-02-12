@@ -26,6 +26,11 @@ with col1:
     Scribe_use_flag = st.selectbox("Use Scribe Width?", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No", disabled=True)
     Scribe_x_width = st.number_input("Enter Scribe X Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1, disabled=True)
     Scribe_y_width = st.number_input("Enter Scribe Y Width (\u03bcm):", min_value=0.0, value=0.0, step=0.1, disabled=True)
+    # New selectbox for choosing the Yield model
+    yield_model = st.selectbox(
+        "Select Yield Model:", 
+        options=["Seeds model", "Murphy's model", "Poisson model", "Exponential model"]
+    )
 
 with col2:
     # Define die dimensions
@@ -398,7 +403,7 @@ if uploaded_file is not None:
 
             # Calculate yield for each row and add a new 'Yield' column
             die_defect_density_df['Yield'] = technology_defect_density_df['Die Aggregate DD'].apply(
-                lambda defect_density: calculate_yield(die_area, defect_density)
+                lambda defect_density: calculate_yield(die_area, defect_density, model_name=yield_model)
             )
 
             pdpw = calculate_pdpw(die_area, d)

@@ -1,5 +1,6 @@
 
 import math
+import numpy as np
 import pandas as pd
 
 # Define constants
@@ -7,6 +8,11 @@ RETICLE_X = 26  # mm
 RETICLE_Y = 33  # mm
 RETICLE_A = RETICLE_X * RETICLE_Y  # Precomputed area of the reticle
 DIAMETER_OF_WAFER = 300  # mm
+# Yield Models
+SEEDS_MODEL = "Seeds model"
+POISSON_MODEL = "Poisson model"
+MURPHY_MODEL = "Murphy's model"
+EXP_MODEL = "Exponential model"
 
 dc_data = [
     ["Logic", "short Ht", "SDD", None, None, None, None],
@@ -110,9 +116,15 @@ def calculate_gdpw(yield_value, pdpw):
     return math.floor(yield_value * pdpw)
 
 # Function to calculate Yield
-def calculate_yield(die_area, defect_density, n=1, model_name="seeds_model"):
-    if model_name == "seeds_model":
-        return (1 / (1 + die_area * defect_density)) ** n
+def calculate_yield(die_area, defect_density, n=1, model_name=SEEDS_MODEL):
+    if model_name == SEEDS_MODEL:
+        return (1 / (1 + die_area * defect_density)) ** n # SEEDS model
+    elif model_name == POISSON_MODEL:
+        return np.exp(-die_area * defect_density) # Poisson's model
+    elif model_name == MURPHY_MODEL:
+        return ((1 - np.exp(-die_area * defect_density))/(die_area * defect_density)) ** 2 # Murphy's model
+    elif model_name == EXP_MODEL:
+        return 1/(1 + die_area * defect_density) # Exponential model
     else:
         raise ValueError(f"Model '{model_name}' not supported yet.")
     
